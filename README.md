@@ -1,11 +1,16 @@
 # Michelin Guide Restaurants Dashboard
 
-Dashboard for analyzing Michelin Guide Restaurants (part of the Plotly Dash [Autumn App Challenge](https://community.plotly.com/t/autumn-app-challenge/87373)).
+Dashboard for analyzing Michelin Guide Restaurants (part of the Plotly Dash [Autumn App Challenge 2024](https://community.plotly.com/t/autumn-app-challenge/87373)).
 
 Some of the visualizations available:
 
 * **Geographical Distribution**: A map showing the location of Michelin-starred restaurants.
 * **Awards Distribution**: Breakdown of distribution of Michelin rating (also per country).
+* **Cuisine Popularity**: Count of restaurants by cuisine type.
+* **Price Range Distribution**: Number of restaurants in each price range.
+* **Green Stars**: Distribution of restaurants that have earned the Green Star.
+* **Top Locations**: Cities with the most Michelin-starred restaurants.
+* **Top Countries**: Countries with the most Michelin-starred restaurants.
 
 ## Getting started
 

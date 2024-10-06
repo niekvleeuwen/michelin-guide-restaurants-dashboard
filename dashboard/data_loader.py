@@ -47,9 +47,6 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     # Convert comma delimited string to array
     df["FacilitiesAndServices"] = df["FacilitiesAndServices"].str.split(",")
 
-    # Convert comma delimited string to array
-    df["Cuisine"] = df["Cuisine"].str.split(", ")
-
     # Correct column to a boolean type
     df["GreenStar"] = df["GreenStar"].astype(bool)
 

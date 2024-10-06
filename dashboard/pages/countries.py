@@ -37,7 +37,6 @@ def update_graph(df, value):
     df = pd.DataFrame.from_dict(df)
     df_filtered = df[df["Country"] == value]
     value_counts = df_filtered["Award"].value_counts().reset_index()
-    print(value_counts)
     return px.bar(value_counts, x="Award", y="count")
 
 
