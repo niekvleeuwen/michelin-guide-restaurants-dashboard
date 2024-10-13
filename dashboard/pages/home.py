@@ -1,15 +1,23 @@
 import dash
-from dash import html
 import dash_bootstrap_components as dbc
-from dash import callback, Input, Output, dcc
 import pandas as pd
 import plotly.express as px
-
+import plotly.graph_objects as go
+from dash import Input, Output, callback, dcc, html
+from data_utils import number_of_countries, number_of_restaurants, top_cuisine
+from graphs import graph_top_cuisine
+from utils import apply_style_to_fig
 
 dash.register_page(__name__, path="/")
 
 layout = [
     html.H3("Home", className="mb-3"),
+    html.P(
+        """The Michelin Guide has long been synonymous with culinary excellence,
+        serving as a global benchmark for top-tier dining experiences. This dashboard explores
+        the data from this guide, to provide some insights and maybe make a recommendation or two!
+        """
+    ),
     dbc.Row(
         [
             dbc.Col(
@@ -55,23 +63,39 @@ layout = [
     dbc.Row(
         [
             dbc.Col(
-                [
-                    html.H4("Top countries"),
-                    html.P("Countries with the most restaurants in the Michelin Guide."),
-                    dcc.Graph(id="home-graph-top-countries"),
-                ],
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Top countries"),
+                            html.P("Countries with the most restaurants in the Michelin Guide."),
+                            dcc.Graph(
+                                id="home-graph-top-countries",
+                                # Due to https://github.com/plotly/plotly.py/issues/3441
+                                figure=go.Figure(layout=dict(template="plotly")),
+                            ),
+                        ]
+                    )
+                ),
                 width=6,
             ),
             dbc.Col(
-                [
-                    html.H4("Top cuisines"),
-                    html.P("The most common cuisine types of restaurants in the Michelin Guide."),
-                    dcc.Graph(id="home-graph-top-cuisine"),
-                ],
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Top cuisines"),
+                            html.P("The most common cuisine types of restaurants in the Michelin Guide."),
+                            dcc.Graph(
+                                id="home-graph-top-cuisine",
+                                # Due to https://github.com/plotly/plotly.py/issues/3441
+                                figure=go.Figure(layout=dict(template="plotly")),
+                            ),
+                        ]
+                    )
+                ),
                 width=6,
             ),
         ],
-        class_name="mt-4",
+        class_name="mt-3",
     ),
 ]
 
@@ -84,33 +108,42 @@ layout = [
     ],
     Input("store", "data"),
 )
-def update_home(df):
+def update_numbers(df):
+    """Callback to update numbers on the top of homepage."""
     df = pd.DataFrame.from_dict(df)
 
-    number_of_countries = len(df[df["Country"].notna()]["Country"].unique())
-    number_of_restaurants = len(df["Name"].unique())
-
-    top_cuisine = df["Cuisine"].value_counts().index[0][0]
-    top_cuisine_count = df["Cuisine"].value_counts().iloc[0]
-    top_cuisine_formatted = f"{top_cuisine} ({top_cuisine_count} occurrences)"
-
-    return number_of_countries, number_of_restaurants, top_cuisine_formatted
+    return (
+        number_of_countries(df),
+        number_of_restaurants(df),
+        top_cuisine(df),
+    )
 
 
 @callback(
-    [
-        Output("home-graph-top-countries", "figure"),
-        Output("home-graph-top-cuisine", "figure"),
-    ],
+    Output("home-graph-top-countries", "figure"),
     Input("store", "data"),
 )
-def update_top_countries_graph(df):
-    df = pd.DataFrame.from_dict(df)
+def graph_top_countries(df_dict: dict) -> go.Figure:
+    """Graph the top x countries in the dataset."""
+    df_top_countries = pd.DataFrame.from_dict(df_dict)
 
-    value_counts = df["Country"].value_counts()[:10].reset_index()
-    fig1 = px.bar(value_counts, x="Country", y="count", labels={"count": "Number of restaurants"})
+    fig_top_countries = px.bar(
+        df_top_countries["Country"].value_counts()[:10].reset_index(),
+        x="Country",
+        y="count",
+        labels={"count": "Number of restaurants"},
+    )
 
-    value_counts = df["Cuisine"].value_counts()[:10].reset_index()
-    fig2 = px.bar(value_counts, x="Cuisine", y="count", labels={"count": "Number of restaurants"})
+    fig_top_countries = apply_style_to_fig(fig_top_countries)
+    return fig_top_countries
 
-    return fig1, fig2
+
+@callback(
+    Output("home-graph-top-cuisine", "figure"),
+    Input("store", "data"),
+)
+def home_graph_top_cuisine(df_dict: dict) -> go.Figure:
+    """Graph the top x cuisines in the dataset."""
+    df_top_cuisines = pd.DataFrame.from_dict(df_dict)
+
+    return graph_top_cuisine(df_top_cuisines)

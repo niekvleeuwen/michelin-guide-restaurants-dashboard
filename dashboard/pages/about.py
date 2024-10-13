@@ -1,7 +1,6 @@
 import dash
 from dash import html
 
-
 dash.register_page(__name__)
 
 layout = [
@@ -16,20 +15,24 @@ layout = [
         ]
     ),
     html.H5("Attributions"),
-    html.P(
+    html.Ul(
         [
-            html.B("Michelin logo: "),
-            "Nikolaos Dimos, CC BY-SA 3.0 ",
-            html.A("via Wikimedia Commons", href="https://creativecommons.org/licenses/by-sa/3.0"),
-            ".",
-        ]
-    ),
-    html.P(
-        [
-            html.B("Dataset: "),
-            "Jerry Ng on ",
-            html.A("Kaggle", href="https://www.kaggle.com/datasets/ngshiheng/michelin-guide-restaurants-2021"),
-            ".",
+            html.Li(
+                [
+                    html.B("Michelin logo: "),
+                    "Nikolaos Dimos, CC BY-SA 3.0 ",
+                    html.A("via Wikimedia Commons", href="https://creativecommons.org/licenses/by-sa/3.0"),
+                    ".",
+                ],
+            ),
+            html.Li(
+                [
+                    html.B("Dataset: "),
+                    "Jerry Ng on ",
+                    html.A("Kaggle", href="https://www.kaggle.com/datasets/ngshiheng/michelin-guide-restaurants-2021"),
+                    ".",
+                ],
+            ),
         ]
     ),
 ]

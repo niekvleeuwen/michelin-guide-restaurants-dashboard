@@ -1,11 +1,11 @@
 import os
+
 import dash
 import dash_bootstrap_components as dbc
 from dash import Dash, dcc, html
+from data_loader import load_data
 from flask import send_from_directory
 from loguru import logger
-
-from data_loader import load_data
 
 app = Dash(
     title="Michelin Guide Restaurants Dashboard",
@@ -34,7 +34,7 @@ CONTENT_STYLE = {
 
 sidebar = html.Div(
     [
-        html.Img(src="static/logos/MichelinStar.svg", width=80),
+        html.Img(src="assets/img/logos/MichelinStar.svg", width=80),
         html.Hr(),
         html.P("Michelin Guide Restaurants Dashboard", className="lead"),
         dbc.Nav(
@@ -76,6 +76,7 @@ app.index_string = """
     <head>
         {%metas%}
         {%css%}
+        <link rel="icon" href="assets/img/logos/MichelinStar.svg">
     </head>
     <body>
         {%app_entry%}

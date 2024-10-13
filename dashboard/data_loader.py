@@ -1,6 +1,7 @@
-from pathlib import Path
-import pandas as pd
 import urllib.request
+from pathlib import Path
+
+import pandas as pd
 from loguru import logger
 
 URL = "https://raw.githubusercontent.com/plotly/datasets/master/michelin_by_Jerry_Ng.csv"
