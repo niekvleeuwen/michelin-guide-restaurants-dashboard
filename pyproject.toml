@@ -64,6 +64,10 @@ target-version = "py311"
 select = ["E", "F", "W", "C901"]
 ignore = []
 
+extend-select = [
+    "I",  # Sort imports
+]
+
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 unfixable = []
