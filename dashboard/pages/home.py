@@ -1,12 +1,16 @@
 import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 from dash import Input, Output, callback, dcc, html
 from data_utils import number_of_countries, number_of_restaurants, top_cuisine
-from graphs import graph_top_cuisine
-from utils import apply_style_to_fig
+from decorators import df_from_dict
+from graphs import (
+    graph_award_distribution,
+    graph_price_distribution_normalized,
+    graph_top_countries,
+    graph_top_cuisine,
+)
 
 dash.register_page(__name__, path="/")
 
@@ -97,6 +101,35 @@ layout = [
         ],
         class_name="mt-3",
     ),
+    dbc.Row(
+        [
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Award distribution"),
+                            html.P("Breakdown of distribution of Michelin ratings."),
+                            dcc.Graph(id="home-awards-distribution"),
+                        ]
+                    )
+                ),
+                width=6,
+            ),
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Price Distribution"),
+                            html.P(" Number of restaurants in each price category."),
+                            dcc.Graph(id="home-graph-price-distribution"),
+                        ]
+                    )
+                ),
+                width=6,
+            ),
+        ],
+        class_name="mt-3",
+    ),
 ]
 
 
@@ -108,10 +141,9 @@ layout = [
     ],
     Input("store", "data"),
 )
-def update_numbers(df):
+@df_from_dict
+def update_numbers(df: pd.DataFrame) -> tuple:
     """Callback to update numbers on the top of homepage."""
-    df = pd.DataFrame.from_dict(df)
-
     return (
         number_of_countries(df),
         number_of_restaurants(df),
@@ -123,27 +155,36 @@ def update_numbers(df):
     Output("home-graph-top-countries", "figure"),
     Input("store", "data"),
 )
-def graph_top_countries(df_dict: dict) -> go.Figure:
+@df_from_dict
+def update_graph_top_countries(df: pd.DataFrame) -> go.Figure:
     """Graph the top x countries in the dataset."""
-    df_top_countries = pd.DataFrame.from_dict(df_dict)
-
-    fig_top_countries = px.bar(
-        df_top_countries["Country"].value_counts()[:10].reset_index(),
-        x="Country",
-        y="count",
-        labels={"count": "Number of restaurants"},
-    )
-
-    fig_top_countries = apply_style_to_fig(fig_top_countries)
-    return fig_top_countries
+    return graph_top_countries(df)
 
 
 @callback(
     Output("home-graph-top-cuisine", "figure"),
     Input("store", "data"),
 )
-def home_graph_top_cuisine(df_dict: dict) -> go.Figure:
+@df_from_dict
+def home_graph_top_cuisine(df: pd.DataFrame) -> go.Figure:
     """Graph the top x cuisines in the dataset."""
-    df_top_cuisines = pd.DataFrame.from_dict(df_dict)
+    return graph_top_cuisine(df)
 
-    return graph_top_cuisine(df_top_cuisines)
+
+@callback(
+    Output("home-awards-distribution", "figure"),
+    Input("store", "data"),
+)
+@df_from_dict
+def update_graph_award_distribution(df: pd.DataFrame):
+    return graph_award_distribution(df)
+
+
+@callback(
+    Output("home-graph-price-distribution", "figure"),
+    Input("store", "data"),
+)
+@df_from_dict
+def update_price_distribution(df: pd.DataFrame):
+    """Plot the locations of restaurants on a map."""
+    return graph_price_distribution_normalized(df)

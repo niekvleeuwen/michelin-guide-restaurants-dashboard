@@ -65,6 +65,7 @@ def add_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = add_award_size_feature(df)
     df = add_city_country_features(df)
+    df = normalize_price(df)
     return df
 
 
@@ -95,4 +96,30 @@ def add_city_country_features(df: pd.DataFrame) -> pd.DataFrame:
     # Correct for locations with the same value for City and Country (e.g. Singapore)
     df.loc[df["Country"].isnull(), "Country"] = df["Location"]
 
+    return df
+
+
+def normalize_price(df: pd.DataFrame) -> pd.DataFrame:
+    """Add column 'Price (normalized)'.
+
+    Based on the length of the string.
+    """
+
+    def price_mapping(price):
+        if pd.isna(price):
+            return price
+
+        length = len(price)
+
+        if length == 1:
+            return "Budget-Friendly"
+        elif length == 2:
+            return "Moderate"
+        elif length == 3:
+            return "Premium"
+        elif length == 4:
+            return "Luxury"
+        raise ValueError("Unknown price")
+
+    df["Price (normalized)"] = df["Price"].apply(price_mapping)
     return df

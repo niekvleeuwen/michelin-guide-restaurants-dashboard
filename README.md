@@ -7,7 +7,7 @@ Some of the visualizations available:
 * **Geographical Distribution**: A map showing the location of Michelin-starred restaurants.
 * **Awards Distribution**: Breakdown of distribution of Michelin rating (also per country).
 * **Cuisine Popularity**: Count of restaurants by cuisine type.
-* **Price Range Distribution**: Number of restaurants in each price range.
+* **Price Distribution**: Number of restaurants in each price category.
 * **Green Stars**: Distribution of restaurants that have earned the Green Star.
 * **Top Locations**: Cities with the most Michelin-starred restaurants.
 * **Top Countries**: Countries with the most Michelin-starred restaurants.
