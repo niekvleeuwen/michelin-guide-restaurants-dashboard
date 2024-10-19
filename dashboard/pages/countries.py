@@ -7,7 +7,7 @@ from data_utils import number_of_cities, number_of_restaurants, top_cuisine, uni
 from decorators import df_from_dict, filter_by_country
 from graphs import graph_award_distribution, graph_map, graph_price_distribution, graph_top_countries, graph_top_cuisine
 
-dash.register_page(__name__)
+dash.register_page(__name__, order=1)
 
 layout = [
     html.H3("Countries", className="mb-3"),

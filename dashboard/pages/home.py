@@ -12,7 +12,7 @@ from graphs import (
     graph_top_cuisine,
 )
 
-dash.register_page(__name__, path="/")
+dash.register_page(__name__, path="/", order=0)
 
 layout = [
     html.H3("Home", className="mb-3"),

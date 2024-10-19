@@ -2,14 +2,14 @@ import os
 
 import dash
 import dash_bootstrap_components as dbc
-from dash import Dash, dcc, html
+from dash import Dash, Input, Output, dcc, html
 from data_loader import load_data
 from flask import send_from_directory
 from loguru import logger
 
 app = Dash(
     title="Michelin Guide Restaurants Dashboard",
-    external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME],
+    external_stylesheets=[dbc.icons.BOOTSTRAP],
     use_pages=True,
 )
 
@@ -32,19 +32,18 @@ CONTENT_STYLE = {
     "padding": "2rem 1rem",
 }
 
+PAGE_ICON_MAPPING = {
+    "Home": "bi bi-house",
+    "Countries": "bi bi-globe-americas",
+    "About": "bi bi-info-circle",
+}
+
 sidebar = html.Div(
     [
         html.Img(src="assets/img/logos/MichelinStar.svg", width=80),
         html.Hr(),
         html.P("Michelin Guide Restaurants Dashboard", className="lead"),
-        dbc.Nav(
-            [
-                dcc.Link("Home", href="/"),
-                dcc.Link("Countries", href="/countries"),
-                dcc.Link("About", href="/about"),
-            ],
-            vertical=True,
-        ),
+        dbc.Nav([], vertical=True, pills=True, id="sidebar-nav"),
     ],
     style=SIDEBAR_STYLE,
     id="sidebar",
@@ -61,6 +60,21 @@ app.layout = html.Div(
         content,
     ]
 )
+
+
+@app.callback(Output("sidebar-nav", "children"), Input("url", "pathname"))
+def update_navbar(url: str) -> list:
+    return [
+        dcc.Link(
+            html.Div(
+                [html.I(className=PAGE_ICON_MAPPING[page["name"]] + " mr-1"), page["name"]],
+                className="d-flex align-items-center",
+            ),
+            href=page["relative_path"],
+            className="nav-link active" if page["relative_path"] == url else "nav-link",
+        )
+        for page in dash.page_registry.values()
+    ]
 
 
 # Serve static files
