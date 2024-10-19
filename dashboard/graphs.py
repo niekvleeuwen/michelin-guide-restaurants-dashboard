@@ -1,11 +1,20 @@
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from graph_utils import apply_style_to_fig
+from graph_utils import MICHELIN_PRIMARY_COLOR, apply_style_to_fig
 
 
 def graph_top_countries(df: pd.DataFrame, top: int = 10) -> go.Figure:
     """Graph the top x countries in the dataset."""
+    counts = df["Country"].value_counts()[:top].reset_index()
+    fig = px.bar(counts, x="Country", y="count", labels={"count": "Number of restaurants"}, text=counts["count"])
+    fig.update_traces(textposition="outside")
+    fig = apply_style_to_fig(fig)
+    return fig
+
+
+def graph_top_cities(df: pd.DataFrame, top: int = 10) -> go.Figure:
+    """Graph the top x cities in the dataset."""
     counts = df["City"].value_counts()[:top].reset_index()
     fig = px.bar(counts, x="City", y="count", labels={"count": "Number of restaurants"}, text=counts["count"])
     fig.update_traces(textposition="outside")
@@ -30,6 +39,18 @@ def graph_award_distribution(df: pd.DataFrame) -> go.Figure:
     fig.update_traces(textposition="outside")
 
     fig = apply_style_to_fig(fig)
+    return fig
+
+
+def graph_green_star_distribution(df: pd.DataFrame) -> go.Figure:
+    """Graph the distribution of the Green Star."""
+    df["GreenStar"] = df["GreenStar"].map({True: "Awarded", False: "Not awarded"})
+
+    counts = df["GreenStar"].value_counts()
+
+    # Use `hole` to create a donut-like pie chart
+    fig = go.Figure(data=[go.Pie(labels=counts.index, values=counts, hole=0.5)])
+    fig.update_traces(marker=dict(colors=[MICHELIN_PRIMARY_COLOR, "#23BDAD"]))
     return fig
 
 

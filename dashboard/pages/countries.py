@@ -5,7 +5,13 @@ import plotly.graph_objects as go
 from dash import Input, Output, callback, dcc, html
 from data_utils import number_of_cities, number_of_restaurants, top_cuisine, unique_countries
 from decorators import df_from_dict, filter_by_country
-from graphs import graph_award_distribution, graph_map, graph_price_distribution, graph_top_countries, graph_top_cuisine
+from graphs import (
+    graph_award_distribution,
+    graph_map,
+    graph_price_distribution,
+    graph_top_cities,
+    graph_top_cuisine,
+)
 
 dash.register_page(__name__, order=1)
 
@@ -185,9 +191,9 @@ def update_numbers(df: pd.DataFrame):
 )
 @df_from_dict
 @filter_by_country
-def update_graph_top_countries(df: pd.DataFrame) -> go.Figure:
-    """Graph the top x countries in the dataset."""
-    return graph_top_countries(df)
+def update_graph_top_cities(df: pd.DataFrame) -> go.Figure:
+    """Graph the top x cities in the dataset."""
+    return graph_top_cities(df)
 
 
 @callback(
