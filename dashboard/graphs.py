@@ -59,14 +59,13 @@ def graph_green_star_distribution(df: pd.DataFrame) -> go.Figure:
 
 def graph_map(df: pd.DataFrame) -> go.Figure:
     """Create a map with all restaurants (size based on award)."""
-    # TODO: add name of restaurant
     fig = px.scatter_map(
         data_frame=df,
         lat="Latitude",
         lon="Longitude",
         color="Award",
         size="Award (Map Size)",
-        hover_data={"Award (Map Size)": False},
+        hover_data={"Award (Map Size)": False, "Latitude": False, "Longitude": False, "Name": True, "Location": True},
         zoom=4,
     )
     fig = apply_style_to_fig(fig, apply_trace_color=False)
