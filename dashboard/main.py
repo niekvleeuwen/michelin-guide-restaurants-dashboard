@@ -35,6 +35,7 @@ CONTENT_STYLE = {
 PAGE_ICON_MAPPING = {
     "Home": "bi bi-house",
     "Countries": "bi bi-globe-americas",
+    "Pricing": "bi bi-currency-dollar",
     "About": "bi bi-info-circle",
 }
 

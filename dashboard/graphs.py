@@ -3,6 +3,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 from graph_utils import MICHELIN_PRIMARY_COLOR, apply_style_to_fig
 
+MICHELIN_AWARDS_ORDERED = ["Selected Restaurants", "Bib Gourmand", "1 Star", "2 Stars", "3 Stars"]
+PRICE_ORDERED = ["Budget-Friendly", "Moderate", "Premium", "Luxury"]
+
 
 def graph_top_countries(df: pd.DataFrame, top: int = 10) -> go.Figure:
     """Graph the top x countries in the dataset."""
@@ -90,10 +93,49 @@ def graph_price_distribution_normalized(df: pd.DataFrame) -> go.Figure:
         x=col,
         y="count",
         labels={"count": "Number of restaurants"},
-        category_orders={"Price (normalized)": ["Budget-Friendly", "Moderate", "Premium", "Luxury"]},
+        category_orders={"Price (normalized)": PRICE_ORDERED},
         text=counts["count"],
     )
     fig.update_traces(textposition="outside")
 
     fig = apply_style_to_fig(fig)
+    return fig
+
+
+def graph_scatter_best_value(df: pd.DataFrame) -> go.Figure:
+    """Create a scatter plot for best value."""
+    if not len(df["Country"].unique()):
+        raise ValueError("Please pass a DataFrame with only one country.")
+
+    fig = px.scatter(
+        df,
+        x="Price",
+        y="Award",
+        size="Value",  # Larger bubbles indicate better value
+        hover_name="Name",
+        color="Value",
+        labels={"Price": "Price Category", "Award": "Michelin Awards"},
+        size_max=60,
+        color_continuous_scale="Inferno",
+        category_orders={"Award": list(reversed(MICHELIN_AWARDS_ORDERED))},
+    )
+    fig.update_xaxes(categoryorder="category ascending")
+    fig = apply_style_to_fig(fig, apply_trace_color=False)
+    return fig
+
+
+def graph_heatmap_price(df: pd.DataFrame) -> go.Figure:
+    """Create a heatmap using price and award."""
+    if not len(df["Country"].unique()):
+        raise ValueError("Please pass a DataFrame with only one country.")
+
+    heatmap_data = pd.pivot_table(df, values="Name", index="Award", columns="Price", aggfunc="count")
+    heatmap_data = heatmap_data.reindex(reversed(MICHELIN_AWARDS_ORDERED), level=0)
+
+    fig = px.imshow(
+        heatmap_data,
+        labels=dict(x="Price Category", y="Michelin Award", color="Count"),
+        color_continuous_scale="Inferno",
+    )
+    fig = apply_style_to_fig(fig, apply_trace_color=False)
     return fig

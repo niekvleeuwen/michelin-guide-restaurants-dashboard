@@ -8,7 +8,6 @@ from decorators import df_from_dict, filter_by_country
 from graphs import (
     graph_award_distribution,
     graph_map,
-    graph_price_distribution,
     graph_top_cities,
     graph_top_cuisine,
 )
@@ -21,7 +20,7 @@ layout = [
         """Visualize data per country.
         """
     ),
-    dbc.Row(dbc.Col(dcc.Dropdown([], id="country-dropdown-selection"), width=3), class_name="mt-1"),
+    dbc.Row(dbc.Col(dcc.Dropdown([], clearable=False, id="country-dropdown-selection"), width=3), class_name="mt-1"),
     html.Hr(),
     dbc.Row(
         [
@@ -128,15 +127,7 @@ layout = [
                 width=6,
             ),
             dbc.Col(
-                dbc.Card(
-                    dbc.CardBody(
-                        [
-                            html.H4("Price Distribution"),
-                            html.P(" Number of restaurants in each price category."),
-                            dcc.Graph(id="countries-graph-price-distribution"),
-                        ]
-                    )
-                ),
+                [],
                 width=6,
             ),
         ],
@@ -235,17 +226,3 @@ def update_graph_award_distribution(df: pd.DataFrame):
 def update_graph_map(df: pd.DataFrame):
     """Plot the locations of restaurants on a map."""
     return graph_map(df)
-
-
-@callback(
-    Output("countries-graph-price-distribution", "figure"),
-    [
-        Input("store", "data"),
-        Input("country-dropdown-selection", "value"),
-    ],
-)
-@df_from_dict
-@filter_by_country
-def update_price_distribution(df: pd.DataFrame):
-    """Plot the locations of restaurants on a map."""
-    return graph_price_distribution(df)

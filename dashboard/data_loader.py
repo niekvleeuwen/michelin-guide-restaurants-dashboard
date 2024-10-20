@@ -66,6 +66,7 @@ def add_features(df: pd.DataFrame) -> pd.DataFrame:
     df = add_award_size_feature(df)
     df = add_city_country_features(df)
     df = normalize_price(df)
+    df = add_value_feature(df)
     return df
 
 
@@ -122,4 +123,27 @@ def normalize_price(df: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("Unknown price")
 
     df["Price (normalized)"] = df["Price"].apply(price_mapping)
+    return df
+
+
+def add_value_feature(df: pd.DataFrame) -> pd.DataFrame:
+    """Add 'value feature'. Based on the 'price' and 'award' column.
+
+    Higher Award at Lower Price = Better Value
+
+    Args:
+        df (pd.DataFrame): dataframe (including column 'Price (normalized)' and 'Award')
+
+    Returns:
+        pd.DataFrame: dataframe with added feature.
+    """
+    price_mapping = {"Budget-Friendly": 1, "Moderate": 2, "Premium": 3, "Luxury": 4}
+    award_mapping = {"Selected Restaurants": 1, "Bib Gourmand": 2, "1 Star": 3, "2 Stars": 4, "3 Stars": 5}
+
+    df["Price Score"] = df["Price (normalized)"].map(price_mapping)
+    df["Award Score"] = df["Award"].map(award_mapping)
+
+    # Create a 'Value' column: Higher Award at Lower Price = Better Value
+    df["Value"] = (df["Award Score"] / df["Price Score"]).round(1)
+
     return df

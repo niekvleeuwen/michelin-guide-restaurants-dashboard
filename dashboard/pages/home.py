@@ -124,7 +124,10 @@ layout = [
                     dbc.CardBody(
                         [
                             html.H4("Price Distribution"),
-                            html.P(" Number of restaurants in each price category."),
+                            html.P(
+                                """Number of restaurants in each price category. This data is normalized across
+                                currencies."""
+                            ),
                             dcc.Graph(id="home-graph-price-distribution"),
                         ]
                     ),
