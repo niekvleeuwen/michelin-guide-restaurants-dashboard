@@ -8,8 +8,7 @@
   <h3 align="center">Michelin Guide Restaurants Dashboard</h3>
 
   <p align="center">
-    Explore Top-Rated Culinary Experiences with Data and Insights, scraped directly from the Michelin Guide website.
-    <br />
+    Explore top-rated culinary experiences with interactive insights, Scraped directly from the Michelin Guide website.
     <br />
     <br />
     <strong>Part of the Plotly Dash
