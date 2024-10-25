@@ -1,7 +1,16 @@
 import dash
 from dash import html
 
-dash.register_page(__name__)
+from dashboard.utils import TITLE
+
+PAGE_TITLE = "About"
+
+dash.register_page(
+    __name__,
+    name=PAGE_TITLE,
+    title=f"{PAGE_TITLE} | {TITLE}",
+)
+
 
 layout = [
     html.H3("About"),

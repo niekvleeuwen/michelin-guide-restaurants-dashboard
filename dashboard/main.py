@@ -3,15 +3,19 @@ import os
 import dash
 import dash_bootstrap_components as dbc
 from dash import Dash, Input, Output, dcc, html
-from data_loader import load_data
 from flask import send_from_directory
 from loguru import logger
 
+from dashboard.data.loader import load_data
+from dashboard.utils import TITLE
+
 app = Dash(
-    title="Michelin Guide Restaurants Dashboard",
+    title=TITLE,
     external_stylesheets=[dbc.icons.BOOTSTRAP],
     use_pages=True,
 )
+
+data = load_data()
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
@@ -33,9 +37,11 @@ CONTENT_STYLE = {
 }
 
 PAGE_ICON_MAPPING = {
-    "Home": "bi bi-house",
+    "Overview": "bi bi-house",
     "Countries": "bi bi-globe-americas",
     "Pricing": "bi bi-currency-dollar",
+    "LLM Analysis": "bi bi-stars",
+    "Recommendations": "bi bi-pin",
     "About": "bi bi-info-circle",
 }
 
@@ -55,7 +61,7 @@ content = html.Div(dash.page_container, style=CONTENT_STYLE)
 app.layout = html.Div(
     [
         # Load the data once, and store it in a dcc.Store
-        dcc.Store(id="store", data=load_data().to_dict()),
+        dcc.Store(id="store", data=data.to_dict()),
         dcc.Location(id="url"),
         sidebar,
         content,

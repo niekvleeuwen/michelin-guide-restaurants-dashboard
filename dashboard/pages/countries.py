@@ -3,16 +3,20 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.graph_objects as go
 from dash import Input, Output, callback, dcc, html
-from data_utils import number_of_cities, number_of_restaurants, top_cuisine, unique_countries
-from decorators import df_from_dict, filter_by_country
-from graphs import (
+
+from dashboard.data.utils import number_of_cities, number_of_restaurants, top_cuisine, unique_countries
+from dashboard.decorators import df_from_dict, filter_by_country
+from dashboard.graphs.graphs import (
     graph_award_distribution,
     graph_map,
     graph_top_cities,
     graph_top_cuisine,
 )
+from dashboard.utils import TITLE
 
-dash.register_page(__name__, order=1)
+PAGE_TITLE = "Countries"
+
+dash.register_page(__name__, name=PAGE_TITLE, title=f"{PAGE_TITLE} | {TITLE}", order=1)
 
 layout = [
     html.H3("Countries", className="mb-3"),

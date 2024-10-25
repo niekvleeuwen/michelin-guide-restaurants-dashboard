@@ -4,8 +4,10 @@ from pathlib import Path
 import pandas as pd
 from loguru import logger
 
+from dashboard.data.database import Database
+
 URL = "https://raw.githubusercontent.com/plotly/datasets/master/michelin_by_Jerry_Ng.csv"
-CACHE_FILE = "data/michelin_data.csv"
+CACHE_FILE = "cache/michelin_data.csv"
 
 
 def load_data() -> pd.DataFrame:
@@ -19,6 +21,7 @@ def load_data() -> pd.DataFrame:
     path = Path(CACHE_FILE)
 
     if not path.is_file():
+        logger.info("Fetching data from source..")
         fetch_data(path)
     else:
         logger.info("Loading data from cache..")
@@ -28,6 +31,9 @@ def load_data() -> pd.DataFrame:
     df = clean_data(df)
 
     df = add_features(df)
+
+    logger.info("Loading data into SQLite database..")
+    Database().load(df)
 
     return df
 
@@ -45,8 +51,6 @@ def fetch_data(path: Path) -> None:
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """Clean dataset."""
-    # Convert comma delimited string to array
-    df["FacilitiesAndServices"] = df["FacilitiesAndServices"].str.split(",")
 
     # Correct column to a boolean type
     df["GreenStar"] = df["GreenStar"].astype(bool)

@@ -2,15 +2,19 @@ import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import Input, Output, callback, dcc, html
-from data_utils import unique_countries
-from decorators import df_from_dict, filter_by_country
-from graphs import (
+
+from dashboard.data.utils import unique_countries
+from dashboard.decorators import df_from_dict, filter_by_country
+from dashboard.graphs.graphs import (
     graph_heatmap_price,
     graph_price_distribution,
     graph_scatter_best_value,
 )
+from dashboard.utils import TITLE
 
-dash.register_page(__name__, order=2)
+PAGE_TITLE = "Pricing"
+
+dash.register_page(__name__, name=PAGE_TITLE, title=f"{PAGE_TITLE} | {TITLE}", order=2)
 
 layout = [
     html.H3("Pricing", className="mb-3"),

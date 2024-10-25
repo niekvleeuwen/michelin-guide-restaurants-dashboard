@@ -8,7 +8,7 @@ def number_of_countries(df: pd.DataFrame) -> int:
 
 def number_of_restaurants(df: pd.DataFrame) -> int:
     """Get the number of restaurants in the dataset."""
-    return len(df["Name"].unique())
+    return len(df.index)
 
 
 def top_cuisine(df: pd.DataFrame) -> int:

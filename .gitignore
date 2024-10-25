@@ -164,5 +164,5 @@ cython_debug/
 # Ruff
 .ruff_cache
 
-# Data folder
-data/
+# Cache folder
+cache/
