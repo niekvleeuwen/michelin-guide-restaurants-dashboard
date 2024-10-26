@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import Input, Output, State, callback, html
+from dash import Input, Output, State, callback, dcc, html
 from dash.exceptions import PreventUpdate
 
 from dashboard.data.llm import LLM
@@ -45,4 +45,4 @@ def analysis_submit(n_clicks, prompt: str) -> str:
 
     result = LLM().invoke_llm(prompt)
 
-    return [html.P(r) for r in result.split("\n")]
+    return dcc.Markdown(result)
