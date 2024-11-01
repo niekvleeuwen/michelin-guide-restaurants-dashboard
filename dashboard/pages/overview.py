@@ -25,7 +25,7 @@ layout = [
     html.P(
         """The Michelin Guide has long been synonymous with culinary excellence,
         serving as a global benchmark for top-tier dining experiences. This dashboard explores
-        the data from this guide, to provide some insights and maybe make a recommendation or two!
+        the data from this guide, to provide insights and maybe make a recommendation or two!
         """
     ),
     dbc.Row(
