@@ -36,13 +36,19 @@ CONTENT_STYLE = {
     "padding": "2rem 1rem",
 }
 
-PAGE_ICON_MAPPING = {
-    "Overview": "bi bi-house",
-    "Countries": "bi bi-globe-americas",
-    "Pricing": "bi bi-currency-dollar",
-    "LLM Analysis": "bi bi-stars",
-    "Recommendations": "bi bi-pin",
-    "About": "bi bi-info-circle",
+NAVBAR = {
+    "Analysis": {
+        "Overview": {"icon": "bi bi-house", "relative_path": "/"},
+        "Countries": {"icon": "bi bi-globe-americas", "relative_path": "/countries"},
+        "Pricing": {"icon": "bi bi-currency-dollar", "relative_path": "/pricing"},
+    },
+    "LLM": {
+        "Analysis": {"icon": "bi bi-stars", "relative_path": "/llm-analysis"},
+        "Recommendations": {"icon": "bi bi-pin", "relative_path": "/recommendations"},
+    },
+    "Other": {
+        "About": {"icon": "bi bi-info-circle", "relative_path": "/about"},
+    },
 }
 
 sidebar = html.Div(
@@ -72,15 +78,29 @@ app.layout = html.Div(
 @app.callback(Output("sidebar-nav", "children"), Input("url", "pathname"))
 def update_navbar(url: str) -> list:
     return [
-        dcc.Link(
-            html.Div(
-                [html.I(className=PAGE_ICON_MAPPING[page["name"]] + " mr-1"), page["name"]],
-                className="d-flex align-items-center",
-            ),
-            href=page["relative_path"],
-            className="nav-link active" if page["relative_path"] == url else "nav-link",
+        html.Div(
+            [
+                html.H5(navbar_group),
+                html.Hr(),
+                html.Div(
+                    [
+                        dcc.Link(
+                            html.Div(
+                                [html.I(className=page_values["icon"] + " mr-1"), page_name],
+                                className="d-flex align-items-center",
+                            ),
+                            href=page_values["relative_path"],
+                            className="nav-link active mb-1"
+                            if page_values["relative_path"] == url
+                            else "nav-link mb-1",
+                        )
+                        for page_name, page_values in navbar_pages.items()
+                    ]
+                ),
+            ],
+            className="mb-4",
         )
-        for page in dash.page_registry.values()
+        for navbar_group, navbar_pages in NAVBAR.items()
     ]
 
 
