@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import dash
@@ -38,6 +39,24 @@ layout = dbc.Container(
             ],
             className="py-4 text-center bg-light rounded-3 shadow-sm",
             fluid=True,
+        ),
+        dbc.Container(
+            [
+                dbc.Alert(
+                    """
+                While the language model strives to provide accurate and helpful answers, it may
+                occasionally produce incorrect or misleading information. Please verify any important information.
+            """,
+                    color="light",
+                    className="my-3",
+                ),
+                dbc.Alert(
+                    [html.B("Note: "), "Please provide an OpenAI API key in the .env file to use LLM functionality."],
+                    color="danger",
+                )
+                if not os.getenv("OPENAI_API_KEY")
+                else None,
+            ]
         ),
         # Recommended prompts section
         dbc.Container(
@@ -140,7 +159,10 @@ def update_result(_, __, user_question, history_list):
     else:
         raise ValueError(f"Incorrect trigger: {trigger}")
 
-    result = LLM().invoke_llm(prompt)
+    if not prompt:
+        return "Please provide a question.", dash.no_update, dash.no_update
+
+    result = LLM().invoke_analysis_llm(prompt)
 
     result = dcc.Markdown(result)
 
