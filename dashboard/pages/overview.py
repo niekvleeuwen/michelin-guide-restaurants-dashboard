@@ -21,7 +21,7 @@ PAGE_TITLE = "Overview"
 dash.register_page(__name__, name=PAGE_TITLE, title=f"{PAGE_TITLE} | {TITLE}", path="/", order=0)
 
 layout = [
-    html.H3("Home", className="mb-3"),
+    html.H3("Overview", className="mb-3"),
     html.P(
         """The Michelin Guide has long been synonymous with culinary excellence,
         serving as a global benchmark for top-tier dining experiences. This dashboard explores
