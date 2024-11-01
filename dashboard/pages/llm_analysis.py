@@ -93,7 +93,8 @@ layout = dbc.Container(
                                                 html.Th("Answer"),
                                             ]
                                         )
-                                    )
+                                    ),
+                                    html.Tr(html.Td("No questions asked yet."), id="analysis-history-list-placeholder"),
                                 ],
                                 id="analysis-history-list",
                             )
@@ -114,6 +115,7 @@ layout = dbc.Container(
     [
         Output("analysis-result-output", "children"),
         Output("analysis-history-list", "children"),
+        Output("analysis-history-list-placeholder", "children"),
     ],
     [
         Input("analysis-submit-button", "n_clicks"),
@@ -126,6 +128,7 @@ layout = dbc.Container(
     prevent_initial_call=True,
 )
 def update_result(_, __, user_question, history_list):
+    """Update results for the LLM analysis page."""
     trigger = dash.callback_context.triggered_id
 
     if isinstance(trigger, dict) and trigger["type"] == "analysis-recommended-prompt":
@@ -138,16 +141,14 @@ def update_result(_, __, user_question, history_list):
         raise ValueError(f"Incorrect trigger: {trigger}")
 
     result = LLM().invoke_llm(prompt)
-    # time.sleep(3)
-    # result = "placeholder result"
+
     result = dcc.Markdown(result)
 
-    # Add to history if a question was asked
+    # Add to history
     new_history = html.Tr([html.Td(datetime.now().strftime("%H:%M:%S")), html.Td(prompt), html.Td(result)])
     history_list = (history_list or []) + [new_history]
 
-    # Reset the clicked prompt's `n_clicks` to avoid repeated callback triggering
-    return result, history_list
+    return result, history_list, []
 
 
 @callback(
@@ -156,6 +157,6 @@ def update_result(_, __, user_question, history_list):
     prevent_initial_call=True,
 )
 def fill_question_input(_):
+    """To improve UX, add the recommended question to the input field."""
     trigger = dash.callback_context.triggered_id
-    print(trigger)
     return RECOMMENDED_PROMPTS[trigger["index"]]
