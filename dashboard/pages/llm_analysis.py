@@ -1,48 +1,161 @@
+from datetime import datetime
+
 import dash
 import dash_bootstrap_components as dbc
-from dash import Input, Output, State, callback, dcc, html
-from dash.exceptions import PreventUpdate
+from dash import ALL, Input, Output, State, callback, dcc, html
+from loguru import logger
 
 from dashboard.data.llm import LLM
 from dashboard.utils import TITLE
 
 PAGE_TITLE = "LLM Analysis"
-
-dash.register_page(__name__, name=PAGE_TITLE, title=f"{PAGE_TITLE} | {TITLE}", order=3)
-
-layout = [
-    html.H3("LLM Analysis", className="mb-3"),
-    html.P(
-        """The LLM Analysis page allows users to explore the data interactively through natural language prompts.
-        """
-    ),
-    # TODO add example queries
-    # 1. How many restaurants are there when filtering for country France?
-    # 2. Show all three-star restaurants in France
-    # 3. What are the most common cuisines in Japan?
-    dbc.Row(
-        dbc.Col(
-            dbc.Form(
-                [
-                    dbc.Label("Question", html_for="analysis-prompt"),
-                    dbc.Textarea(id="analysis-prompt", placeholder="""Enter any question related to Michelin data"""),
-                    dbc.Button("Execute", id="analysis-submit-btn", class_name="mt-2"),
-                ]
-            ),
-            width=6,
-        )
-    ),
-    dbc.Row(dbc.Col([dbc.Spinner([html.H5("Result:"), html.Div("-", id="analysis-output")])]), class_name="mt-5"),
+RECOMMENDED_PROMPTS = [
+    "How many 3-star restaurants are there in France?",
+    "What is the most popular cuisine for 3-star restaurants?",
+    "List the most affordable Michelin-star restaurants in Rotterdam.",
 ]
 
 
-@callback(
-    Output("analysis-output", "children"), Input("analysis-submit-btn", "n_clicks"), State("analysis-prompt", "value")
+dash.register_page(__name__, name=PAGE_TITLE, title=f"{PAGE_TITLE} | {TITLE}", order=3)
+
+layout = dbc.Container(
+    [
+        # Hero section
+        dbc.Container(
+            [
+                html.H1("LLM Analysis", className="display-4 text-primary"),
+                html.P(
+                    "Explore the data interactively through natural language prompts.",
+                    className="lead",
+                ),
+                dbc.Textarea(
+                    id="analysis-question-input",
+                    placeholder="Enter any question related to Michelin data...",
+                    style={"minHeight": "50px"},
+                    class_name="mt-3",
+                ),
+                dbc.Button("Submit", color="primary", id="analysis-submit-button", className="mt-2"),
+            ],
+            className="py-4 text-center bg-light rounded-3 shadow-sm",
+            fluid=True,
+        ),
+        # Recommended prompts section
+        dbc.Container(
+            dbc.Card(
+                [
+                    dbc.CardHeader("Recommended Prompts", className="bg-secondary text-white"),
+                    dbc.ListGroup(
+                        [
+                            dbc.ListGroupItem(
+                                prompt, action=True, id={"type": "analysis-recommended-prompt", "index": i}
+                            )
+                            for i, prompt in enumerate(RECOMMENDED_PROMPTS)
+                        ],
+                        flush=True,
+                    ),
+                ],
+                className="shadow-sm",
+            ),
+            className="my-3 p-1",
+            fluid=True,
+        ),
+        # Result card to display the answer
+        dbc.Container(
+            dbc.Card(
+                [
+                    dbc.CardHeader("Result", className="bg-primary text-white"),
+                    dbc.CardBody(
+                        [
+                            dbc.Spinner(id="analysis-result-output", children="-", color="primary", delay_show=100),
+                        ]
+                    ),
+                ],
+                style={"minHeight": "150px"},
+                className="shadow-sm",
+            ),
+            className="my-3 p-1",
+            fluid=True,
+        ),
+        # History section
+        dbc.Container(
+            dbc.Card(
+                [
+                    dbc.CardHeader("Prompt History", className="bg-info text-white"),
+                    dbc.CardBody(
+                        [
+                            dbc.Table(
+                                [
+                                    html.Thead(
+                                        html.Tr(
+                                            [
+                                                html.Th("Time"),
+                                                html.Th("Question"),
+                                                html.Th("Answer"),
+                                            ]
+                                        )
+                                    )
+                                ],
+                                id="analysis-history-list",
+                            )
+                        ]
+                    ),
+                ],
+                className="shadow-sm",
+            ),
+            className="my-3 p-1",
+            fluid=True,
+        ),
+    ],
+    fluid=True,
 )
-def analysis_submit(n_clicks, prompt: str) -> str:
-    if not n_clicks:
-        raise PreventUpdate
+
+
+@callback(
+    [
+        Output("analysis-result-output", "children"),
+        Output("analysis-history-list", "children"),
+    ],
+    [
+        Input("analysis-submit-button", "n_clicks"),
+        Input({"type": "analysis-recommended-prompt", "index": ALL}, "n_clicks"),
+    ],
+    [
+        State("analysis-question-input", "value"),
+        State("analysis-history-list", "children"),
+    ],
+    prevent_initial_call=True,
+)
+def update_result(_, __, user_question, history_list):
+    trigger = dash.callback_context.triggered_id
+
+    if isinstance(trigger, dict) and trigger["type"] == "analysis-recommended-prompt":
+        prompt = RECOMMENDED_PROMPTS[trigger["index"]]
+        logger.debug(f"Recommended prompt {prompt}")
+    elif trigger == "analysis-submit-button":
+        prompt = user_question
+        logger.debug(f"User prompt {prompt}")
+    else:
+        raise ValueError(f"Incorrect trigger: {trigger}")
 
     result = LLM().invoke_llm(prompt)
+    # time.sleep(3)
+    # result = "placeholder result"
+    result = dcc.Markdown(result)
 
-    return dcc.Markdown(result)
+    # Add to history if a question was asked
+    new_history = html.Tr([html.Td(datetime.now().strftime("%H:%M:%S")), html.Td(prompt), html.Td(result)])
+    history_list = (history_list or []) + [new_history]
+
+    # Reset the clicked prompt's `n_clicks` to avoid repeated callback triggering
+    return result, history_list
+
+
+@callback(
+    Output("analysis-question-input", "value"),
+    Input({"type": "analysis-recommended-prompt", "index": ALL}, "n_clicks"),
+    prevent_initial_call=True,
+)
+def fill_question_input(_):
+    trigger = dash.callback_context.triggered_id
+    print(trigger)
+    return RECOMMENDED_PROMPTS[trigger["index"]]
