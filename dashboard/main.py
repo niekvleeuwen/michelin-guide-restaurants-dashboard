@@ -10,6 +10,7 @@ from dashboard.data.loader import load_data
 from dashboard.utils import TITLE
 
 app = Dash(title=TITLE, external_stylesheets=[dbc.icons.BOOTSTRAP], use_pages=True, suppress_callback_exceptions=True)
+server = app.server
 
 data = load_data()
 
