@@ -59,6 +59,11 @@ Some of the visualizations available:
 * **Top Locations**: Cities with the most Michelin-starred restaurants.
 * **Top Countries**: Countries with the most Michelin-starred restaurants.
 
+There are also some features which utilize an LLM (an OpenAI API key is needed).
+
+* **LLM Analysis**: Ask general questions about the data, which is then retrieved using an SQLite database.
+* **Recommendations**: Ask for restaurant recommendations which certain constrains and requests.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
@@ -109,6 +114,8 @@ Next, install the pre-commit hooks
 pre-commit install
 ```
 
+Copy the `.env.dist` file to `.env` and enter in the requested variables.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
@@ -117,7 +124,7 @@ pre-commit install
 The program can be executed using:
 
 ```shell
-python dashboard/main.py
+python -m dashboard.main
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
