@@ -67,8 +67,46 @@ def graph_map(df: pd.DataFrame) -> go.Figure:
         lon="Longitude",
         color="Award",
         size="Award (Map Size)",
-        hover_data={"Award (Map Size)": False, "Latitude": False, "Longitude": False, "Name": True, "Location": True},
+        hover_data={
+            "Award (Map Size)": False,
+            "Latitude": False,
+            "Longitude": False,
+            "Name": True,
+            "Location": True,
+            "Price": True,
+        },
         zoom=4,
+    )
+    fig = apply_style_to_fig(fig, apply_trace_color=False)
+    return fig
+
+
+def graph_map_cuisine(df: pd.DataFrame) -> go.Figure:
+    fig = px.scatter_map(
+        df,
+        lat="Latitude",
+        lon="Longitude",
+        hover_name="Name",
+        hover_data={"Award": True, "Price": True, "Location": True, "Latitude": False, "Longitude": False},
+        color="Award",
+        color_discrete_sequence=px.colors.qualitative.Dark24,
+        zoom=3,
+        height=700,
+    )
+    fig = apply_style_to_fig(fig, apply_trace_color=False)
+    return fig
+
+
+def graph_green_star_map(df: pd.DataFrame) -> go.Figure:
+    fig = px.scatter_map(
+        df,
+        lat="Latitude",
+        lon="Longitude",
+        hover_name="Name",
+        hover_data={"Cuisine": True, "Location": True, "Price": True, "Latitude": False, "Longitude": False},
+        color_discrete_sequence=["green"],  # Green for Green Star
+        zoom=3,
+        height=700,
     )
     fig = apply_style_to_fig(fig, apply_trace_color=False)
     return fig

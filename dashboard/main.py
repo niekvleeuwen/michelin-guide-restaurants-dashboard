@@ -9,11 +9,7 @@ from loguru import logger
 from dashboard.data.loader import load_data
 from dashboard.utils import TITLE
 
-app = Dash(
-    title=TITLE,
-    external_stylesheets=[dbc.icons.BOOTSTRAP],
-    use_pages=True,
-)
+app = Dash(title=TITLE, external_stylesheets=[dbc.icons.BOOTSTRAP], use_pages=True, suppress_callback_exceptions=True)
 
 data = load_data()
 
@@ -41,10 +37,11 @@ NAVBAR = {
         "Overview": {"icon": "bi bi-house", "relative_path": "/"},
         "Countries": {"icon": "bi bi-globe-americas", "relative_path": "/countries"},
         "Pricing": {"icon": "bi bi-currency-dollar", "relative_path": "/pricing"},
+        "Geo": {"icon": "bi bi-pin", "relative_path": "/geo"},
     },
     "LLM": {
         "Analysis": {"icon": "bi bi-stars", "relative_path": "/llm-analysis"},
-        "Recommendations": {"icon": "bi bi-pin", "relative_path": "/recommendations"},
+        "Recommendations": {"icon": "bi bi-award-fill", "relative_path": "/recommendations"},
     },
     "Other": {
         "About": {"icon": "bi bi-info-circle", "relative_path": "/about"},
@@ -53,7 +50,7 @@ NAVBAR = {
 
 sidebar = html.Div(
     [
-        html.Img(src="assets/img/logos/MichelinStar.svg", width=80),
+        html.Img(src="assets/img/logos/MichelinStar.svg", width=60),
         html.Hr(),
         html.P("Michelin Guide Restaurants Dashboard", className="lead"),
         dbc.Nav([], vertical=True, pills=True, id="sidebar-nav"),
