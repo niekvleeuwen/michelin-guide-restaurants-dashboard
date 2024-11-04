@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 
 import dash
@@ -6,7 +5,6 @@ import dash_bootstrap_components as dbc
 from dash import ALL, Input, Output, State, callback, dcc, html
 from loguru import logger
 
-from dashboard.data.llm import LLM
 from dashboard.utils import TITLE
 
 PAGE_TITLE = "LLM Analysis"
@@ -35,7 +33,7 @@ layout = dbc.Container(
                     style={"minHeight": "50px"},
                     class_name="mt-3",
                 ),
-                dbc.Button("Submit", color="primary", id="analysis-submit-button", className="mt-2"),
+                dbc.Button("Submit", color="primary", id="analysis-submit-button", className="mt-2", disabled=True),
             ],
             className="py-4 text-center bg-light rounded-3 shadow-sm",
             fluid=True,
@@ -51,11 +49,9 @@ layout = dbc.Container(
                     className="my-3",
                 ),
                 dbc.Alert(
-                    [html.B("Note: "), "Please provide an OpenAI API key in the .env file to use LLM functionality."],
+                    [html.B("Note: "), "The LLM functionality is currently not available."],
                     color="danger",
-                )
-                if not os.getenv("OPENAI_API_KEY")
-                else None,
+                ),
             ]
         ),
         # Recommended prompts section
@@ -162,7 +158,7 @@ def update_result(_, __, user_question, history_list):
     if not prompt:
         return "Please provide a question.", dash.no_update, dash.no_update
 
-    result = LLM().invoke_analysis_llm(prompt)
+    result = ""
 
     result = dcc.Markdown(result)
 

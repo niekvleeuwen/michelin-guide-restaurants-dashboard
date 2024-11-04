@@ -4,8 +4,6 @@ from pathlib import Path
 import pandas as pd
 from loguru import logger
 
-from dashboard.data.database import Database
-
 URL = "https://raw.githubusercontent.com/plotly/datasets/master/michelin_by_Jerry_Ng.csv"
 CACHE_FILE = "cache/michelin_data.csv"
 
@@ -31,9 +29,6 @@ def load_data() -> pd.DataFrame:
     df = clean_data(df)
 
     df = add_features(df)
-
-    logger.info("Loading data into SQLite database..")
-    Database().load(df)
 
     return df
 

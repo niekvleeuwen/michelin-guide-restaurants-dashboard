@@ -1,11 +1,8 @@
-import os
-
 import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import Input, Output, State, callback, dcc, html
 
-from dashboard.data.llm import LLM
 from dashboard.decorators import df_from_dict
 from dashboard.utils import TITLE
 
@@ -39,11 +36,9 @@ layout = dbc.Container(
                     className="my-3",
                 ),
                 dbc.Alert(
-                    [html.B("Note: "), "Please provide an OpenAI API key in the .env file to use LLM functionality."],
+                    [html.B("Note: "), "The LLM functionality is currently not available."],
                     color="danger",
-                )
-                if not os.getenv("OPENAI_API_KEY")
-                else None,
+                ),
             ]
         ),
         # Questions
@@ -163,7 +158,9 @@ layout = dbc.Container(
                                         [
                                             dbc.Col(
                                                 [
-                                                    dbc.Button("Submit", id="submit-button", color="primary"),
+                                                    dbc.Button(
+                                                        "Submit", id="submit-button", color="primary", disabled=True
+                                                    ),
                                                 ],
                                                 width="auto",
                                             )
@@ -246,11 +243,5 @@ def process_form(
     if not award_range:
         return [], dbc.Alert("Please select at least one award option.", color="danger")
 
-    result = LLM().invoke_recommendations_llm(
-        location_preference,
-        cuisine_preference,
-        price_range,
-        award_range,
-        description_of_restaurant,
-    )
+    result = ""
     return dcc.Markdown(result), []
