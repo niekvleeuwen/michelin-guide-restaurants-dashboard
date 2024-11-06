@@ -3,8 +3,8 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import Input, Output, State, callback, dcc, html
 
-from dashboard.decorators import df_from_dict
-from dashboard.utils import TITLE
+from decorators import df_from_dict
+from utils import TITLE
 
 PAGE_TITLE = "Recommendations"
 

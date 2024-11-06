@@ -3,9 +3,9 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import Input, Output, callback, dcc, html
 
-from dashboard.decorators import df_from_dict
-from dashboard.graphs.graphs import graph_green_star_map, graph_map_cuisine
-from dashboard.utils import TITLE
+from decorators import df_from_dict
+from graphs.graphs import graph_green_star_map, graph_map_cuisine
+from utils import TITLE
 
 PAGE_TITLE = "Geospatial Analysis"
 

@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 from dash import ALL, Input, Output, State, callback, dcc, html
 from loguru import logger
 
-from dashboard.utils import TITLE
+from utils import TITLE
 
 PAGE_TITLE = "LLM Analysis"
 RECOMMENDED_PROMPTS = [

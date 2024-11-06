@@ -1,7 +1,7 @@
 import dash
 from dash import html
 
-from dashboard.utils import TITLE
+from utils import TITLE
 
 PAGE_TITLE = "About"
 

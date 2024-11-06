@@ -4,9 +4,9 @@ import pandas as pd
 import plotly.graph_objects as go
 from dash import Input, Output, callback, dcc, html
 
-from dashboard.data.utils import number_of_countries, number_of_restaurants, top_cuisine
-from dashboard.decorators import df_from_dict
-from dashboard.graphs.graphs import (
+from data.utils import number_of_countries, number_of_restaurants, top_cuisine
+from decorators import df_from_dict
+from graphs.graphs import (
     graph_award_distribution,
     graph_green_star_distribution,
     graph_price_distribution_normalized,
@@ -14,7 +14,7 @@ from dashboard.graphs.graphs import (
     graph_top_countries,
     graph_top_cuisine,
 )
-from dashboard.utils import TITLE
+from utils import TITLE
 
 PAGE_TITLE = "Overview"
 

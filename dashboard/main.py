@@ -6,8 +6,8 @@ from dash import Dash, Input, Output, dcc, html
 from flask import send_from_directory
 from loguru import logger
 
-from dashboard.data.loader import load_data
-from dashboard.utils import TITLE
+from data.loader import load_data
+from utils import TITLE
 
 app = Dash(title=TITLE, external_stylesheets=[dbc.icons.BOOTSTRAP], use_pages=True, suppress_callback_exceptions=True)
 server = app.server

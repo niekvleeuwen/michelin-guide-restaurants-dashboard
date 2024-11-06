@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 
-from dashboard.utils import MICHELIN_PRIMARY_COLOR
+from utils import MICHELIN_PRIMARY_COLOR
 
 
 def default_layout() -> dict:
