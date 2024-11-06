@@ -1,33 +1,10 @@
-[tool.poetry]
+[project]
 name = "michelin-guide-restaurants-dashboard"
 version = "0.1.0"
 description = "Dashboard for analyzing Michelin Guide Restaurants"
 authors = ["Niek van Leeuwen <ik@niekvanleeuwen.nl>"]
 license = "MIT"
 readme = "README.md"
-package-mode = false
-
-[tool.poetry.dependencies]
-python = "^3.10"
-dash = "^2.18.1"
-pandas = "^2.2.3"
-loguru = "^0.7.2"
-dash-bootstrap-components = "^1.6.0"
-nbformat = "^5.10.4"
-langchain = "^0.3.4"
-langchain-openai = "^0.2.3"
-python-dotenv = "^1.0.1"
-pydantic = "^2.9.2"
-langchain-community = "^0.3.3"
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.29.5"
-ruff = "^0.6.8"
-pre-commit = "^3.8.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
