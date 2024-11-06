@@ -1,5 +1,7 @@
 import os
 
+from dotenv import load_dotenv
+
 import dash
 import dash_bootstrap_components as dbc
 from dash import Dash, Input, Output, dcc, html
@@ -7,6 +9,8 @@ from data.loader import load_data
 from flask import send_from_directory
 from loguru import logger
 from utils import TITLE
+
+load_dotenv()
 
 app = Dash(title=TITLE, external_stylesheets=[dbc.icons.BOOTSTRAP], use_pages=True, suppress_callback_exceptions=True)
 server = app.server
