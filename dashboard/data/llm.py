@@ -1,8 +1,7 @@
+from data.database import Database
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_openai import ChatOpenAI
-
-from dashboard.data.database import Database
-from dashboard.singleton import SingletonMeta
+from singleton import SingletonMeta
 
 OPENAI_MODEL = "gpt-3.5-turbo"
 

@@ -3,9 +3,8 @@ from pathlib import Path
 import pandas as pd
 from langchain_community.utilities import SQLDatabase
 from loguru import logger
+from singleton import SingletonMeta
 from sqlalchemy import create_engine
-
-from dashboard.singleton import SingletonMeta
 
 
 class Database(metaclass=SingletonMeta):

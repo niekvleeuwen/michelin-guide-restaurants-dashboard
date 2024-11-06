@@ -2,9 +2,8 @@ import urllib.request
 from pathlib import Path
 
 import pandas as pd
+from data.database import Database
 from loguru import logger
-
-from dashboard.data.database import Database
 
 URL = "https://raw.githubusercontent.com/plotly/datasets/master/michelin_by_Jerry_Ng.csv"
 CACHE_FILE = "cache/michelin_data.csv"

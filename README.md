@@ -124,7 +124,7 @@ Copy the `.env.dist` file to `.env` and enter in the requested variables.
 The program can be executed using:
 
 ```shell
-python -m dashboard.main
+python dashboard/main.py
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
