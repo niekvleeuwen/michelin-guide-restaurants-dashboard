@@ -1,11 +1,10 @@
 import os
 
-from dotenv import load_dotenv
-
 import dash
 import dash_bootstrap_components as dbc
+from caching import cache
 from dash import Dash, Input, Output, dcc, html
-from data.loader import load_data
+from dotenv import load_dotenv
 from flask import send_from_directory
 from loguru import logger
 from utils import TITLE
@@ -14,8 +13,7 @@ load_dotenv()
 
 app = Dash(title=TITLE, external_stylesheets=[dbc.icons.BOOTSTRAP], use_pages=True, suppress_callback_exceptions=True)
 server = app.server
-
-data = load_data()
+cache.init_app(app.server)
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
@@ -67,8 +65,6 @@ content = html.Div(dash.page_container, style=CONTENT_STYLE)
 
 app.layout = html.Div(
     [
-        # Load the data once, and store it in a dcc.Store
-        dcc.Store(id="store", data=data.to_dict()),
         dcc.Location(id="url"),
         sidebar,
         content,

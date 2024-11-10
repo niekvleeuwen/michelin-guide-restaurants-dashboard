@@ -97,6 +97,7 @@ def graph_map_cuisine(df: pd.DataFrame) -> go.Figure:
 
 
 def graph_green_star_map(df: pd.DataFrame) -> go.Figure:
+    df = df[df["GreenStar"] == 1]
     fig = px.scatter_map(
         df,
         lat="Latitude",
