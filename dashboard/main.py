@@ -62,7 +62,10 @@ sidebar = html.Div(
 )
 
 content = html.Div(
-    dbc.Spinner(dash.page_container, delay_show=500, color="primary", fullscreen=True), style=CONTENT_STYLE
+    dbc.Spinner(
+        dash.page_container, delay_show=100, delay_hide=100, color="primary", spinner_class_name="fixed-top mt-5"
+    ),
+    style=CONTENT_STYLE,
 )
 
 app.layout = html.Div(
