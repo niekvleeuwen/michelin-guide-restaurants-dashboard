@@ -1,8 +1,9 @@
 import dash
 import dash_bootstrap_components as dbc
-from caching import retrieve_data
-from dash import dcc, html
+import pandas as pd
+from dash import Input, Output, callback, dcc, html
 from data.utils import number_of_countries, number_of_restaurants, top_cuisine
+from decorators import load_df
 from graphs.graphs import (
     graph_award_distribution,
     graph_green_star_distribution,
@@ -19,7 +20,6 @@ dash.register_page(__name__, name=PAGE_TITLE, title=f"{PAGE_TITLE} | {TITLE}", p
 
 
 def layout():
-    df = retrieve_data()
     return [
         html.H3("Overview", className="mb-3"),
         html.P(
@@ -35,7 +35,7 @@ def layout():
                         dbc.CardBody(
                             [
                                 html.H4(
-                                    number_of_countries(df),
+                                    "-",
                                     id="home-number-of-countries",
                                     className="card-title",
                                 ),
@@ -49,7 +49,7 @@ def layout():
                         dbc.CardBody(
                             [
                                 html.H4(
-                                    number_of_restaurants(df),
+                                    "-",
                                     id="home-number-of-restaurants",
                                     className="card-title",
                                 ),
@@ -62,7 +62,7 @@ def layout():
                     dbc.Card(
                         dbc.CardBody(
                             [
-                                html.H4(top_cuisine(df), id="home-top-cuisine", className="card-title"),
+                                html.H4("-", id="home-top-cuisine", className="card-title"),
                                 html.H6("Top cuisine", className="card-subtitle"),
                             ]
                         ),
@@ -78,7 +78,7 @@ def layout():
                             [
                                 html.H4("Award distribution"),
                                 html.P("Distribution of Michelin ratings."),
-                                dcc.Graph(id="home-awards-distribution", figure=graph_award_distribution(df)),
+                                dcc.Graph(id="home-awards-distribution"),
                             ]
                         ),
                         class_name="h-100",
@@ -94,7 +94,7 @@ def layout():
                                 The Green Star of Michelin recognizes restaurants for their commitment to sustainability
                                 and environmentally friendly practices.
                             """),
-                                dcc.Graph(id="home-green-star-distribution", figure=graph_green_star_distribution(df)),
+                                dcc.Graph(id="home-green-star-distribution"),
                             ]
                         ),
                         class_name="h-100",
@@ -112,7 +112,7 @@ def layout():
                             [
                                 html.H4("Top cuisines"),
                                 html.P("The most common cuisine types of restaurants in the Michelin Guide."),
-                                dcc.Graph(id="home-graph-top-cuisine", figure=graph_top_cuisine(df)),
+                                dcc.Graph(id="home-graph-top-cuisine"),
                             ]
                         ),
                         class_name="h-100",
@@ -128,9 +128,7 @@ def layout():
                                     """Number of restaurants in each price category. This data is normalized across
                                 currencies."""
                                 ),
-                                dcc.Graph(
-                                    id="home-graph-price-distribution", figure=graph_price_distribution_normalized(df)
-                                ),
+                                dcc.Graph(id="home-graph-price-distribution"),
                             ]
                         ),
                         class_name="h-100",
@@ -154,7 +152,7 @@ def layout():
                             [
                                 html.H4("Top countries"),
                                 html.P("Countries with the most restaurants in the Michelin Guide."),
-                                dcc.Graph(id="home-graph-top-countries", figure=graph_top_countries(df)),
+                                dcc.Graph(id="home-graph-top-countries"),
                             ]
                         ),
                         class_name="h-100",
@@ -167,7 +165,7 @@ def layout():
                             [
                                 html.H4("Top cities"),
                                 html.P("Cities with the most restaurants in the Michelin Guide."),
-                                dcc.Graph(id="home-graph-top-cities", figure=graph_top_cities(df)),
+                                dcc.Graph(id="home-graph-top-cities"),
                             ]
                         ),
                         class_name="h-100",
@@ -178,3 +176,33 @@ def layout():
             class_name="mt-3",
         ),
     ]
+
+
+@callback(
+    [
+        Output("home-number-of-countries", "children"),
+        Output("home-number-of-restaurants", "children"),
+        Output("home-top-cuisine", "children"),
+        Output("home-graph-top-countries", "figure"),
+        Output("home-graph-top-cities", "figure"),
+        Output("home-graph-top-cuisine", "figure"),
+        Output("home-awards-distribution", "figure"),
+        Output("home-green-star-distribution", "figure"),
+        Output("home-graph-price-distribution", "figure"),
+    ],
+    Input("home-number-of-countries", "children"),  # Trigger on page load
+)
+@load_df
+def update_overview(df: pd.DataFrame, _) -> tuple:
+    """Callback to update numbers on the top of homepage."""
+    return (
+        number_of_countries(df),
+        number_of_restaurants(df),
+        top_cuisine(df),
+        graph_top_countries(df),
+        graph_top_cities(df),
+        graph_top_cuisine(df),
+        graph_award_distribution(df),
+        graph_green_star_distribution(df),
+        graph_price_distribution_normalized(df),
+    )
