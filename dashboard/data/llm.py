@@ -1,6 +1,7 @@
 from data.database import Database
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_openai import ChatOpenAI
+from loguru import logger
 from singleton import SingletonMeta
 
 OPENAI_MODEL = "gpt-3.5-turbo"
@@ -32,6 +33,7 @@ class LLM(metaclass=SingletonMeta):
     """
 
     def __init__(self) -> None:
+        logger.debug("LLM object is being created..")
         db = Database().get_db()
         llm = ChatOpenAI(model=OPENAI_MODEL)
         self.agent_executor = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
