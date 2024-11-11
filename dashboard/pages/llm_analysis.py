@@ -18,115 +18,118 @@ RECOMMENDED_PROMPTS = [
 
 dash.register_page(__name__, name=PAGE_TITLE, title=f"{PAGE_TITLE} | {TITLE}", order=3)
 
-layout = dbc.Container(
-    [
-        # Hero section
-        dbc.Container(
-            [
-                html.H1("LLM Analysis", className="display-4 text-primary"),
-                html.P(
-                    "Explore the data interactively through natural language prompts.",
-                    className="lead",
-                ),
-                dbc.Textarea(
-                    id="analysis-question-input",
-                    placeholder="Enter any question related to Michelin data...",
-                    style={"minHeight": "50px"},
-                    class_name="mt-3",
-                ),
-                dbc.Button("Submit", color="primary", id="analysis-submit-button", className="mt-2"),
-            ],
-            className="py-4 text-center bg-light rounded-3 shadow-sm",
-            fluid=True,
-        ),
-        dbc.Container(
-            [
-                dbc.Alert(
-                    """
+
+def layout():
+    return dbc.Container(
+        [
+            # Hero section
+            dbc.Container(
+                [
+                    html.H1("LLM Analysis", className="display-4 text-primary"),
+                    html.P(
+                        "Explore the data interactively through natural language prompts.",
+                        className="lead",
+                    ),
+                    dbc.Textarea(
+                        id="analysis-question-input",
+                        placeholder="Enter any question related to Michelin data...",
+                        style={"minHeight": "50px"},
+                        class_name="mt-3",
+                    ),
+                    dbc.Button("Submit", color="primary", id="analysis-submit-button", className="mt-2"),
+                ],
+                className="py-4 text-center bg-light rounded-3 shadow-sm",
+                fluid=True,
+            ),
+            dbc.Container(
+                [
+                    dbc.Alert(
+                        """
                 While the language model strives to provide accurate and helpful answers, it may
                 occasionally produce incorrect or misleading information. Please verify any important information.
             """,
-                    color="light",
-                    className="my-3",
-                ),
-                dbc.Alert(
-                    [html.B("Note: "), "Please provide an OpenAI API key in the .env file to use LLM functionality."],
-                    color="danger",
-                )
-                if not os.getenv("OPENAI_API_KEY")
-                else None,
-            ]
-        ),
-        # Recommended prompts section
-        dbc.Container(
-            dbc.Card(
-                [
-                    dbc.CardHeader("Recommended Prompts", className="bg-secondary text-white"),
-                    dbc.ListGroup(
+                        color="light",
+                        className="my-3",
+                    ),
+                    dbc.Alert(
                         [
-                            dbc.ListGroupItem(
-                                prompt, action=True, id={"type": "analysis-recommended-prompt", "index": i}
-                            )
-                            for i, prompt in enumerate(RECOMMENDED_PROMPTS)
+                            html.B("Note: "),
+                            "Please provide an OpenAI API key in the .env file to use LLM functionality.",
                         ],
-                        flush=True,
-                    ),
-                ],
-                className="shadow-sm",
+                        color="danger",
+                    )
+                    if not os.getenv("OPENAI_API_KEY")
+                    else None,
+                ]
             ),
-            className="my-3 p-1",
-            fluid=True,
-        ),
-        # Result card to display the answer
-        dbc.Container(
-            dbc.Card(
-                [
-                    dbc.CardHeader("Result", className="bg-primary text-white"),
-                    dbc.CardBody(
-                        [
-                            dbc.Spinner(id="analysis-result-output", children="-", color="primary", delay_show=100),
-                        ]
-                    ),
-                ],
-                style={"minHeight": "150px"},
-                className="shadow-sm",
+            # Recommended prompts section
+            dbc.Container(
+                dbc.Card(
+                    [
+                        dbc.CardHeader("Recommended Prompts", className="bg-secondary text-white"),
+                        dbc.ListGroup(
+                            [
+                                dbc.ListGroupItem(
+                                    prompt, action=True, id={"type": "analysis-recommended-prompt", "index": i}
+                                )
+                                for i, prompt in enumerate(RECOMMENDED_PROMPTS)
+                            ],
+                            flush=True,
+                        ),
+                    ],
+                    className="shadow-sm",
+                ),
+                className="my-3 p-1",
+                fluid=True,
             ),
-            className="my-3 p-1",
-            fluid=True,
-        ),
-        # History section
-        dbc.Container(
-            dbc.Card(
-                [
-                    dbc.CardHeader("Prompt History", className="bg-info text-white"),
-                    dbc.CardBody(
-                        [
-                            dbc.Table(
-                                [
-                                    html.Thead(
+            # Result card to display the answer
+            dbc.Container(
+                dbc.Card(
+                    [
+                        dbc.CardHeader("Result", className="bg-primary text-white"),
+                        dbc.CardBody("-", id="analysis-result-output"),
+                    ],
+                    style={"minHeight": "150px"},
+                    className="shadow-sm",
+                ),
+                className="my-3 p-1",
+                fluid=True,
+            ),
+            # History section
+            dbc.Container(
+                dbc.Card(
+                    [
+                        dbc.CardHeader("Prompt History", className="bg-info text-white"),
+                        dbc.CardBody(
+                            [
+                                dbc.Table(
+                                    [
+                                        html.Thead(
+                                            html.Tr(
+                                                [
+                                                    html.Th("Time"),
+                                                    html.Th("Question"),
+                                                    html.Th("Answer"),
+                                                ]
+                                            )
+                                        ),
                                         html.Tr(
-                                            [
-                                                html.Th("Time"),
-                                                html.Th("Question"),
-                                                html.Th("Answer"),
-                                            ]
-                                        )
-                                    ),
-                                    html.Tr(html.Td("No questions asked yet."), id="analysis-history-list-placeholder"),
-                                ],
-                                id="analysis-history-list",
-                            )
-                        ]
-                    ),
-                ],
-                className="shadow-sm",
+                                            html.Td("No questions asked yet."), id="analysis-history-list-placeholder"
+                                        ),
+                                    ],
+                                    id="analysis-history-list",
+                                )
+                            ]
+                        ),
+                    ],
+                    className="shadow-sm",
+                ),
+                className="my-3 p-1",
+                fluid=True,
             ),
-            className="my-3 p-1",
-            fluid=True,
-        ),
-    ],
-    fluid=True,
-)
+        ],
+        fluid=True,
+    )
 
 
 @callback(

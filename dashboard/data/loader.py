@@ -2,7 +2,6 @@ import urllib.request
 from pathlib import Path
 
 import pandas as pd
-from data.database import Database
 from loguru import logger
 
 URL = "https://raw.githubusercontent.com/plotly/datasets/master/michelin_by_Jerry_Ng.csv"
@@ -32,7 +31,6 @@ def load_data() -> pd.DataFrame:
     df = add_features(df)
 
     logger.info("Loading data into SQLite database..")
-    Database().load(df)
 
     return df
 
