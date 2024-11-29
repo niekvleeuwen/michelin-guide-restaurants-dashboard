@@ -43,4 +43,12 @@ layout = [
             ),
         ]
     ),
+    html.H5("Code"),
+    html.P(
+        [
+            "The code for this app is available on ",
+            html.A("Github", href="https://github.com/niekvleeuwen/michelin-guide-restaurants-dashboard"),
+            ".",
+        ]
+    ),
 ]
