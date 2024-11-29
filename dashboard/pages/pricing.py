@@ -50,7 +50,10 @@ def layout():
                                 dcc.Graph(id="pricing-graph-price-distribution"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=6,
+                    sm=0,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -61,44 +64,44 @@ def layout():
                                 dcc.Graph(id="pricing-graph-heatmap"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=6,
+                    sm=0,
+                ),
+                dbc.Col(
+                    [
+                        dbc.Card(
+                            dbc.CardBody(
+                                [
+                                    html.H4("Best value"),
+                                    html.P(
+                                        [
+                                            """This plot shows how Michelin Guide restaurants in different price
+                                            categories align with their awards""",
+                                            html.Span(
+                                                html.I(className="bi bi-info-circle ml-2"),
+                                                id="pricing-best-value-tooltip-target",
+                                                style={"cursor": "pointer"},
+                                            ),
+                                            dbc.Tooltip(
+                                                """
+                                        A higher award at a lower price indicates better value.
+                                        """,
+                                                target="pricing-best-value-tooltip-target",
+                                            ),
+                                            ".",
+                                        ]
+                                    ),
+                                    dcc.Graph(id="pricing-best-value-scatter"),
+                                ]
+                            ),
+                        )
+                    ],
+                    width=12,
                 ),
             ],
-            class_name="mt-4",
-        ),
-        dbc.Row(
-            dbc.Col(
-                [
-                    dbc.Card(
-                        dbc.CardBody(
-                            [
-                                html.H4("Best value"),
-                                html.P(
-                                    [
-                                        """This plot shows how Michelin Guide restaurants in different price categories
-                                    align with their awards""",
-                                        html.Span(
-                                            html.I(className="bi bi-info-circle ml-2"),
-                                            id="pricing-best-value-tooltip-target",
-                                            style={"cursor": "pointer"},
-                                        ),
-                                        dbc.Tooltip(
-                                            """
-                                    A higher award at a lower price indicates better value.
-                                    """,
-                                            target="pricing-best-value-tooltip-target",
-                                        ),
-                                        ".",
-                                    ]
-                                ),
-                                dcc.Graph(id="pricing-best-value-scatter"),
-                            ]
-                        ),
-                    )
-                ],
-                width=12,
-            ),
-            class_name="mt-4",
+            class_name="g-3",
         ),
     ]
 

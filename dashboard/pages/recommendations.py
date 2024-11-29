@@ -20,7 +20,7 @@ def layout():
             # Hero section
             dbc.Container(
                 [
-                    html.H1(PAGE_TITLE, className="display-4 text-primary"),
+                    html.H1(PAGE_TITLE, className="text-primary"),
                     html.P(
                         "Get restaurants recommendations based on your preferences.",
                         className="lead",

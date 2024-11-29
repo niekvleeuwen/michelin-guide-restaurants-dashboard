@@ -31,7 +31,8 @@ def layout():
                 dcc.Dropdown(
                     sorted(unique_countries(df)), value="France", clearable=False, id="country-dropdown-selection"
                 ),
-                width=3,
+                md=3,
+                sm=12,
             ),
             class_name="mt-1",
         ),
@@ -50,7 +51,10 @@ def layout():
                                 html.H6("Number of cities", className="card-subtitle"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=4,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -64,7 +68,10 @@ def layout():
                                 html.H6("Number of restaurants", className="card-subtitle"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=4,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -74,27 +81,24 @@ def layout():
                                 html.H6("Top cuisine", className="card-subtitle"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=4,
+                    sm=12,
                 ),
-            ],
-            class_name="mt-4",
-        ),
-        dbc.Row(
-            dbc.Col(
-                dbc.Card(
-                    dbc.CardBody(
-                        [
-                            html.H4("Map"),
-                            html.P("A map showing the location of Michelin-starred restaurants."),
-                            dcc.Graph(id="countries-map-graph-content"),
-                        ]
-                    )
-                )
-            ),
-            class_name="mt-3",
-        ),
-        dbc.Row(
-            [
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                html.H4("Map"),
+                                html.P("A map showing the location of Michelin-starred restaurants."),
+                                dcc.Graph(id="countries-map-graph-content"),
+                            ]
+                        )
+                    ),
+                    class_name="mb-3",
+                    width=12,
+                ),
                 dbc.Col(
                     dbc.Card(
                         dbc.CardBody(
@@ -107,7 +111,9 @@ def layout():
                             ]
                         )
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -121,13 +127,10 @@ def layout():
                             ]
                         )
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
-            ],
-            class_name="mt-3",
-        ),
-        dbc.Row(
-            [
                 dbc.Col(
                     dbc.Card(
                         dbc.CardBody(
@@ -138,14 +141,13 @@ def layout():
                             ]
                         )
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
-                dbc.Col(
-                    [],
-                    width=6,
-                ),
+                dbc.Col([], class_name="mb-3", md=6, sm=0),
             ],
-            class_name="mt-3",
+            class_name="g-3",
         ),
     ]
 

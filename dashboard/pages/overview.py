@@ -42,7 +42,10 @@ def layout():
                                 html.H6("Number of countries", className="card-subtitle"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=4,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -56,7 +59,10 @@ def layout():
                                 html.H6("Number of restaurants", className="card-subtitle"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=4,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -66,12 +72,11 @@ def layout():
                                 html.H6("Top cuisine", className="card-subtitle"),
                             ]
                         ),
-                    )
+                    ),
+                    class_name="mb-3",
+                    md=4,
+                    sm=12,
                 ),
-            ]
-        ),
-        dbc.Row(
-            [
                 dbc.Col(
                     dbc.Card(
                         dbc.CardBody(
@@ -81,9 +86,10 @@ def layout():
                                 dcc.Graph(id="home-awards-distribution"),
                             ]
                         ),
-                        class_name="h-100",
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -97,15 +103,11 @@ def layout():
                                 dcc.Graph(id="home-green-star-distribution"),
                             ]
                         ),
-                        class_name="h-100",
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
-            ],
-            class_name="mt-3",
-        ),
-        dbc.Row(
-            [
                 dbc.Col(
                     dbc.Card(
                         dbc.CardBody(
@@ -115,9 +117,10 @@ def layout():
                                 dcc.Graph(id="home-graph-top-cuisine"),
                             ]
                         ),
-                        class_name="h-100",
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -131,14 +134,15 @@ def layout():
                                 dcc.Graph(id="home-graph-price-distribution"),
                             ]
                         ),
-                        class_name="h-100",
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
             ],
-            class_name="mt-3",
+            class_name="g-3",
         ),
-        html.H5("Locations", className="mt-3 mb-2"),
+        html.H5("Locations", className="mt-5 mb-2"),
         html.P(
             """This section highlights the top countries and locations with Michelin Guide restaurants,
         showcasing key insights into their global distribution
@@ -155,9 +159,10 @@ def layout():
                                 dcc.Graph(id="home-graph-top-countries"),
                             ]
                         ),
-                        class_name="h-100",
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
                 dbc.Col(
                     dbc.Card(
@@ -168,12 +173,13 @@ def layout():
                                 dcc.Graph(id="home-graph-top-cities"),
                             ]
                         ),
-                        class_name="h-100",
                     ),
-                    width=6,
+                    class_name="mb-3",
+                    md=6,
+                    sm=12,
                 ),
             ],
-            class_name="mt-3",
+            class_name="g-3",
         ),
     ]
 

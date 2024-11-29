@@ -1,0 +1,21 @@
+/* Content default style */
+.content {
+    padding: 2rem 10px;
+}
+
+/* Large screens: align content with the sidebar */
+@media (min-width: 768px) {
+    .content {
+        margin-left: 18rem; /* Matches sidebar width */
+        margin-right: 2rem;
+        margin-top: 1rem;
+    }
+}
+
+/* Small screens: no left margin (no sidebar) */
+@media (max-width: 768px) {
+    .content {
+        margin-left: 10px; /* Minimal margin */
+        margin-right: 10px;
+    }
+}
