@@ -11,7 +11,7 @@
     Explore top-rated culinary experiences with interactive insights, Scraped directly from the Michelin Guide website.
     <br />
     <br />
-    <strong>Part of the Plotly Dash
+    <strong>🥈 Second place in the Plotly Dash
     <a href="https://community.plotly.com/t/autumn-app-challenge/87373">Autumn App Challenge 2024 »</a>
     </strong>
   </p>
