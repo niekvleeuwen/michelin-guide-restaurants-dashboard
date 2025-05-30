@@ -155,7 +155,6 @@ def update_result(_, __, user_question, history_list):
 
     if isinstance(trigger, dict) and trigger["type"] == "analysis-recommended-prompt":
         prompt = RECOMMENDED_PROMPTS[trigger["index"]]
-        logger.debug(f"Recommended prompt {prompt}")
     elif trigger == "analysis-submit-button":
         prompt = user_question
         logger.debug(f"User prompt {prompt}")
