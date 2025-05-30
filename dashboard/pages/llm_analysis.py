@@ -4,9 +4,10 @@ from datetime import datetime
 import dash
 import dash_bootstrap_components as dbc
 from dash import ALL, Input, Output, State, callback, dcc, html
-from data.llm import LLM
 from loguru import logger
-from utils import TITLE
+
+from dashboard.data.llm import LLM
+from dashboard.utils import TITLE
 
 PAGE_TITLE = "LLM Analysis"
 RECOMMENDED_PROMPTS = [

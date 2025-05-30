@@ -2,14 +2,15 @@ import os
 
 import dash
 import dash_bootstrap_components as dbc
-from caching import cache, retrieve_data
 from dash import Dash, Input, Output, State, dcc, html
-from data.database import Database
-from data.llm import LLM
 from dotenv import load_dotenv
 from flask import send_from_directory
 from loguru import logger
-from utils import TITLE
+
+from dashboard.caching import cache, retrieve_data
+from dashboard.data.database import Database
+from dashboard.data.llm import LLM
+from dashboard.utils import TITLE
 
 load_dotenv()
 

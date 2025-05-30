@@ -1,8 +1,9 @@
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from graphs.utils import apply_style_to_fig
-from utils import MICHELIN_PRIMARY_COLOR
+
+from dashboard.graphs.utils import apply_style_to_fig
+from dashboard.utils import MICHELIN_PRIMARY_COLOR
 
 MICHELIN_AWARDS_ORDERED = ["Selected Restaurants", "Bib Gourmand", "1 Star", "2 Stars", "3 Stars"]
 PRICE_ORDERED = ["Budget-Friendly", "Moderate", "Premium", "Luxury"]

@@ -1,17 +1,18 @@
 import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
-from caching import retrieve_data
 from dash import Input, Output, callback, dcc, html
-from data.utils import number_of_cities, number_of_restaurants, top_cuisine, unique_countries
-from decorators import filter_by_country, load_df
-from graphs.graphs import (
+
+from dashboard.caching import retrieve_data
+from dashboard.data.utils import number_of_cities, number_of_restaurants, top_cuisine, unique_countries
+from dashboard.decorators import filter_by_country, load_df
+from dashboard.graphs.graphs import (
     graph_award_distribution,
     graph_map,
     graph_top_cities,
     graph_top_cuisine,
 )
-from utils import TITLE
+from dashboard.utils import TITLE
 
 PAGE_TITLE = "Countries"
 

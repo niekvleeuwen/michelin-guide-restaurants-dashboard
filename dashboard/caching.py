@@ -1,6 +1,7 @@
 import pandas as pd
-from data.loader import load_data
 from flask_caching import Cache
+
+from dashboard.data.loader import load_data
 
 TIMEOUT = 60 * 60 * 24  # Cache data for approximately 1 day
 

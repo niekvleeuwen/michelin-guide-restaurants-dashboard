@@ -1,16 +1,17 @@
 import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
-from caching import retrieve_data
 from dash import Input, Output, callback, dcc, html
-from data.utils import unique_countries
-from decorators import filter_by_country, load_df
-from graphs.graphs import (
+
+from dashboard.caching import retrieve_data
+from dashboard.data.utils import unique_countries
+from dashboard.decorators import filter_by_country, load_df
+from dashboard.graphs.graphs import (
     graph_heatmap_price,
     graph_price_distribution,
     graph_scatter_best_value,
 )
-from utils import TITLE
+from dashboard.utils import TITLE
 
 PAGE_TITLE = "Pricing"
 

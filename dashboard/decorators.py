@@ -1,5 +1,6 @@
 import pandas as pd
-from caching import retrieve_data
+
+from dashboard.caching import retrieve_data
 
 
 def filter_by_country(func):

@@ -1,8 +1,9 @@
-from data.database import Database
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_openai import ChatOpenAI
 from loguru import logger
-from singleton import SingletonMeta
+
+from dashboard.data.database import Database
+from dashboard.singleton import SingletonMeta
 
 OPENAI_MODEL = "gpt-3.5-turbo"
 
@@ -62,8 +63,8 @@ class LLM(metaclass=SingletonMeta):
         User Preferences:
         - City or Country Preference: {location_preference if location_preference else "Any location"}
         - Cuisine Preference: {cuisine_preference if cuisine_preference else "Any cuisine"}
-        - Price Normalized Range: {', '.join(price_range) if price_range else "Any price range"}
-        - Award Range: {', '.join(award_range) if award_range else "Any award level"}
+        - Price Normalized Range: {", ".join(price_range) if price_range else "Any price range"}
+        - Award Range: {", ".join(award_range) if award_range else "Any award level"}
         - Description of Desired Restaurant: {
             description_of_restaurant if description_of_restaurant else "No specific description"
         }

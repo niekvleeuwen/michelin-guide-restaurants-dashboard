@@ -2,9 +2,10 @@ import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import Input, Output, callback, dcc, html
-from data.utils import number_of_countries, number_of_restaurants, top_cuisine
-from decorators import load_df
-from graphs.graphs import (
+
+from dashboard.data.utils import number_of_countries, number_of_restaurants, top_cuisine
+from dashboard.decorators import load_df
+from dashboard.graphs.graphs import (
     graph_award_distribution,
     graph_green_star_distribution,
     graph_price_distribution_normalized,
@@ -12,7 +13,7 @@ from graphs.graphs import (
     graph_top_countries,
     graph_top_cuisine,
 )
-from utils import TITLE
+from dashboard.utils import TITLE
 
 PAGE_TITLE = "Overview"
 

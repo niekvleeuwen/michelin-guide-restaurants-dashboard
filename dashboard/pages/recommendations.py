@@ -3,10 +3,11 @@ import os
 import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
-from caching import retrieve_data
 from dash import Input, Output, State, callback, dcc, html
-from data.llm import LLM
-from utils import TITLE
+
+from dashboard.caching import retrieve_data
+from dashboard.data.llm import LLM
+from dashboard.utils import TITLE
 
 PAGE_TITLE = "Recommendations"
 
