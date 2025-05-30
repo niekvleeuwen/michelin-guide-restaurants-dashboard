@@ -1,0 +1,30 @@
+name: Build and Push Docker Image to GHCR
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - .github/workflows/docker-ghcr.yml
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write  # needed to push to GHCR
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/michelin-dashboard:latest .
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository_owner }}/michelin-dashboard:latest
