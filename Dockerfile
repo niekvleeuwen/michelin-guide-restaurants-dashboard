@@ -1,4 +1,4 @@
-FROM python:3.15-slim AS builder
+FROM python:3.14-slim AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
@@ -18,7 +18,7 @@ RUN uv sync --frozen --no-dev --no-install-project \
  && find /opt/venv -name '*.pyc' -delete
 
 
-FROM python:3.15-slim
+FROM python:3.14-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

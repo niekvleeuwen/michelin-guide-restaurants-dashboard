@@ -84,11 +84,11 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 Please make sure to have the following prerequisites installed.
-* Python 3.11 or greater
+* Python 3.14 or greater
 * Poetry
 
 ### Installation
-To set up the project, ensure you have Python 3.11+ installed. Follow these steps:
+To set up the project, ensure you have Python 3.14+ installed. Follow these steps:
 
 Clone the repository:
 

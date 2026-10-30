@@ -1,7 +1,7 @@
 [project]
 name = "michelin-guide-restaurants-dashboard"
 version = "0.1.0"
-requires-python = ">=3.15"
+requires-python = ">=3.14"
 description = "Dashboard for analyzing Michelin Guide Restaurants"
 authors = [
       {name = "Niek van Leeuwen", email = "ik@niekvanleeuwen.nl"},
