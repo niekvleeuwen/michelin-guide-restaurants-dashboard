@@ -1,3 +1,5 @@
+import os
+
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_openai import ChatOpenAI
 from loguru import logger
@@ -6,6 +8,7 @@ from dashboard.data.database import Database
 from dashboard.singleton import SingletonMeta
 
 OPENAI_MODEL = "gpt-6-luna"
+UNAVAILABLE_MESSAGE = "Responses are not available right now."
 
 
 def _to_text(output) -> str:
@@ -46,12 +49,18 @@ class LLM(metaclass=SingletonMeta):
 
     def __init__(self) -> None:
         logger.debug("LLM object is being created..")
+        self.agent_executor = None
+        if not os.getenv("OPENAI_API_KEY", "").strip():
+            logger.warning("OPENAI_API_KEY is missing or empty, LLM functionality is disabled.")
+            return
         db = Database().get_db()
         llm = ChatOpenAI(model=OPENAI_MODEL)
         self.agent_executor = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
 
     def invoke_analysis_llm(self, prompt: str) -> str:
         """Invoke the LLM with a given prompt."""
+        if self.agent_executor is None:
+            return UNAVAILABLE_MESSAGE
         input_str = self.ANALYSIS_PROMPT.format(prompt)
         response = self.agent_executor.invoke({"input": input_str})
         return _to_text(response["output"])
@@ -65,6 +74,8 @@ class LLM(metaclass=SingletonMeta):
         description_of_restaurant: str,
     ) -> str:
         """Invoke the LLM to make a recommendation using the SQL agent."""
+        if self.agent_executor is None:
+            return UNAVAILABLE_MESSAGE
         input_str = f"""
         You are a helpful assistant recommending restaurants based on user preferences.
         Use the connected database to recommend a restaurant based on the following user preferences.
@@ -85,6 +96,5 @@ class LLM(metaclass=SingletonMeta):
         Ensure your response feels conversational and helpful, as if you are directly speaking to the user about your
         recommendation.
         """
-        print(input_str)
         response = self.agent_executor.invoke({"input": input_str})
         return _to_text(response["output"])
