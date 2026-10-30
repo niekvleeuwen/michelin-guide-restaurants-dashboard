@@ -3,6 +3,8 @@ services:
     image: ghcr.io/niekvleeuwen/michelin-dashboard:latest
     restart: unless-stopped
     env_file: .env
+    volumes:
+      - app_cache:/app/cache
     expose:
       - "8050"
 
@@ -21,5 +23,6 @@ services:
       - caddy_config:/config
 
 volumes:
+  app_cache:
   caddy_data:
   caddy_config:
