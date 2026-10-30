@@ -5,7 +5,18 @@ from loguru import logger
 from dashboard.data.database import Database
 from dashboard.singleton import SingletonMeta
 
-OPENAI_MODEL = "gpt-3.5-turbo"
+OPENAI_MODEL = "gpt-6-luna"
+
+
+def _to_text(output) -> str:
+    """Normalize agent output, which can be a string or a list of content blocks, to a string."""
+    if isinstance(output, str):
+        return output
+    if isinstance(output, list):
+        return "".join(
+            block if isinstance(block, str) else block.get("text", "") for block in output if isinstance(block, (str, dict))
+        )
+    return str(output)
 
 
 class LLM(metaclass=SingletonMeta):
@@ -43,7 +54,7 @@ class LLM(metaclass=SingletonMeta):
         """Invoke the LLM with a given prompt."""
         input_str = self.ANALYSIS_PROMPT.format(prompt)
         response = self.agent_executor.invoke({"input": input_str})
-        return response["output"]
+        return _to_text(response["output"])
 
     def invoke_recommendations_llm(
         self,
@@ -76,4 +87,4 @@ class LLM(metaclass=SingletonMeta):
         """
         print(input_str)
         response = self.agent_executor.invoke({"input": input_str})
-        return response["output"]
+        return _to_text(response["output"])
