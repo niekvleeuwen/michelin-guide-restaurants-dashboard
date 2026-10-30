@@ -205,4 +205,4 @@ app.index_string = """
 
 if __name__ == "__main__":
     logger.info("Starting server")
-    app.run_server(debug=True)
+    app.run(debug=True)

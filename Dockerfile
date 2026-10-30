@@ -1,41 +1,39 @@
-# Use an official Python image as a base (minimal and secure)
-FROM python:3.11-slim
+FROM python:3.15-slim AS builder
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    GUNICORN_WORKERS=4 \
-    GUNICORN_BIND=0.0.0.0:8050
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Create a non-root user to run the app
-RUN addgroup --system dashgroup && adduser --system --ingroup dashgroup dashuser
+ENV UV_COMPILE_BYTECODE=0 \
+    UV_LINK_MODE=copy \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_PROJECT_ENVIRONMENT=/opt/venv
 
-# Set the working directory
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
  && rm -rf /var/lib/apt/lists/*
 
-# Copy dependency files
-COPY requirements.txt .
+WORKDIR /app
 
-# Install Python dependencies securely
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev --no-install-project \
+ && find /opt/venv -type d \( -name tests -o -name test -o -name __pycache__ \) -prune -exec rm -rf {} + \
+ && find /opt/venv -name '*.pyc' -delete
 
-# Copy application files
-COPY . .
 
-# Set permissions
-RUN chown -R dashuser:dashgroup /app
+FROM python:3.15-slim
 
-# Switch to non-root user
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH="/opt/venv/bin:$PATH"
+
+RUN addgroup --system dashgroup && adduser --system --ingroup dashgroup dashuser
+
+WORKDIR /app
+
+COPY --from=builder /opt/venv /opt/venv
+COPY --chown=dashuser:dashgroup dashboard ./dashboard
+RUN mkdir cache && chown dashuser:dashgroup cache
+
 USER dashuser
 
-# Expose the port used by the Dash app
 EXPOSE 8050
 
-# Start the Gunicorn server with the Dash app
-CMD ["gunicorn", "--bind", "0.0.0.0:8050", "--workers", "4", "--threads", "2", "dashboard.main:server"]
+CMD ["gunicorn", "--preload", "--bind", "0.0.0.0:8050", "--workers", "4", "--threads", "2", "dashboard.main:server"]

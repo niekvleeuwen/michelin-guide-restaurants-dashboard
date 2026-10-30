@@ -1,0 +1,9 @@
+.git
+.venv
+.idea
+.env
+notebooks
+**/__pycache__
+cache
+.github
+*.md

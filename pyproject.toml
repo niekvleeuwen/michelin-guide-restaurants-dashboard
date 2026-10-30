@@ -1,7 +1,7 @@
 [project]
 name = "michelin-guide-restaurants-dashboard"
 version = "0.1.0"
-requires-python = ">=3.13"
+requires-python = ">=3.15"
 description = "Dashboard for analyzing Michelin Guide Restaurants"
 authors = [
       {name = "Niek van Leeuwen", email = "ik@niekvanleeuwen.nl"},
@@ -9,24 +9,24 @@ authors = [
 readme = "README.md"
 license = "MIT"
 dependencies = [
-    "dash-bootstrap-components==1.6.0",
-    "dash==2.18.2",
-    "flask-caching==2.3.0",
-    "gunicorn==23.0.0",
-    "langchain-community==0.3.3",
-    "langchain-openai==0.2.3",
-    "langchain==0.3.4",
-    "loguru==0.7.2",
-    "pandas==2.2.3",
-    "pydantic==2.9.2",
-    "python-dotenv==1.0.1",
+    "dash-bootstrap-components>=2.0.4",
+    "dash>=4.4.1",
+    "flask-caching>=2.5.1",
+    "gunicorn>=26.2.0",
+    "langchain-community>=0.4.2",
+    "langchain-openai>=1.7.2",
+    "langchain>=1.4.7",
+    "loguru>=0.7.3",
+    "pandas>=3.1.0",
+    "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
 ]
 
 [dependency-groups]
 dev = [
-    "ipykernel==6.29.5",
-    "ruff==0.11.12",
-    "pre-commit==4.2.0",
+    "ipykernel>=7.4.0",
+    "ruff>=0.17.2",
+    "pre-commit>=4.7.0",
 ]
 
 [tool.uv]

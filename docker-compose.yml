@@ -1,0 +1,28 @@
+services:
+  app:
+    image: ghcr.io/niekvleeuwen/michelin-dashboard:latest
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - app_cache:/app/cache
+    expose:
+      - "8050"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  app_cache:
+  caddy_data:
+  caddy_config:
