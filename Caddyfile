@@ -1,0 +1,8 @@
+{
+	email ik@niekvanleeuwen.nl
+}
+
+michelin-dash.niekvanleeuwen.nl {
+	encode gzip
+	reverse_proxy app:8050
+}
