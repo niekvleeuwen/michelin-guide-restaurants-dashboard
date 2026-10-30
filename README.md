@@ -85,7 +85,7 @@ To get a local copy up and running follow these simple example steps.
 
 Please make sure to have the following prerequisites installed.
 * Python 3.14 or greater
-* Poetry
+* [uv](https://docs.astral.sh/uv/)
 
 ### Installation
 To set up the project, ensure you have Python 3.14+ installed. Follow these steps:
@@ -97,21 +97,15 @@ git clone https://github.com/niekvleeuwen/michelin-guide-restaurants-dashboard.g
 cd michelin-guide-restaurants-dashboard
 ```
 
-Install dependencies using Poetry:
+Install dependencies using uv (this also creates the virtual environment):
 
 ```shell
-poetry install
-```
-
-Then enter the created virtual environment:
-
-```shell
-poetry shell
+uv sync
 ```
 
 Next, install the pre-commit hooks
 ```shell
-pre-commit install
+uv run pre-commit install
 ```
 
 Copy the `.env.dist` file to `.env` and enter in the requested variables.
@@ -124,7 +118,7 @@ Copy the `.env.dist` file to `.env` and enter in the requested variables.
 The program can be executed using:
 
 ```shell
-python dashboard/main.py
+uv run python dashboard/main.py
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
